@@ -20,4 +20,19 @@ class TeamAPI {
             listOfTeams
         }
     }
+
+    fun numberOfTeams(): Int {
+        return teams.size
+    }
+
+    fun findTeam(index: Int): Team? {
+        return if (isValidListIndex(index, teams)) {
+            teams[index]
+        } else null
+    }
+
+    //utility method to determine if an index is valid in a list.
+    fun isValidListIndex(index: Int, list: List<Any>): Boolean {
+        return (index >= 0 && index < list.size)
+    }
 }
