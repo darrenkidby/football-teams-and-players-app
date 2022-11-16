@@ -49,7 +49,7 @@ fun addTeam(){
     val teamName = readNextLine("Enter name of the Team: ")
     val teamCountry  = readNextLine("Enter the Country the Team plays in: ")
     val leagueName = readNextLine("Enter name of the League the team plays in: ")
-    val leaguePosition = readNextInt("Enter a priority (Champions-1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20-Relegated): ")
+    val leaguePosition = readNextInt("Enter a position (Champions-1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20-Relegated): ")
     val isTeamAdded = teamAPI.add(Team(teamName, teamCountry, leagueName, leaguePosition, false))
 
     if (isTeamAdded) {
