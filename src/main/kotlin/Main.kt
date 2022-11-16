@@ -1,8 +1,13 @@
+import controllers.TeamAPI
+import models.Team
 import mu.KotlinLogging
 import java.lang.System.exit
 import utils.ScannerInput
+import utils.ScannerInput.readNextInt
+import utils.ScannerInput.readNextLine
 
 private val logger = KotlinLogging.logger {}
+private val teamAPI = TeamAPI()
 
 fun main(args: Array<String>) {
     runMenu()
@@ -40,11 +45,23 @@ fun runMenu() {
 }
 
 fun addTeam(){
-    logger.info { "addTeam() function invoked" }
+    //logger.info { "addTeam() function invoked" }
+    val teamName = readNextLine("Enter name of the Team: ")
+    val teamCountry  = readNextLine("Enter the Country the Team plays in: ")
+    val leagueName = readNextLine("Enter name of the League the team plays in: ")
+    val leaguePosition = readNextInt("Enter a priority (Champions-1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20-Relegated): ")
+    val isTeamAdded = teamAPI.add(Team(teamName, teamCountry, leagueName, leaguePosition, false))
+
+    if (isTeamAdded) {
+        println("Added Successfully")
+    } else {
+        println("Add Failed")
+    }
 }
 
 fun listTeams(){
-    logger.info { "listTeams() function invoked" }
+    //logger.info { "listTeams() function invoked" }
+    println(teamAPI.listAllTeams())
 }
 
 fun updateTeam(){
