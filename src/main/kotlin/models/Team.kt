@@ -1,8 +1,9 @@
 package models
 
-data class Team(val teamName: String,
-                val teamCountry: String,
-                val leagueName: String,
-                val leaguePosition: Int,
-                val isTeamPlayingEurope :Boolean){
+data class Team(
+    var teamName: String,
+    var teamCountry: String,
+    var leagueName: String,
+    var leaguePosition: Int,
+    val isTeamPlayingEurope :Boolean){
 }
