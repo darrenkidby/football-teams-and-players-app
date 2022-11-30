@@ -5,7 +5,9 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import java.util.*
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 
 class TeamAPITest {
 
@@ -60,5 +62,43 @@ class TeamAPITest {
         assertTrue(noTeams!!.add(newTeam))
         assertEquals(1, noTeams!!.numberOfTeams())
         assertEquals(newTeam, noTeams!!.findTeam(noTeams!!.numberOfTeams() - 1))
+    }
+
+    @Test
+    fun `listNonEuropeanTeams returns non european teams stored when ArrayList is empty`() {
+        assertEquals(0, noTeams!!.numberOfNonEuropeanTeams())
+        assertFalse(
+            noTeams!!.listNonEuropeanTeams().lowercase().contains("no non european teams")
+        )
+    }
+
+    @Test
+    fun `listNonEuropeanTeams returns non european teams when ArrayList has non european teams stored`() {
+        assertEquals(5, populatedTeams!!.numberOfNonEuropeanTeams())
+        val activeTeamsString = populatedTeams!!.listNonEuropeanTeams().lowercase()
+        assertFalse(activeTeamsString.contains("Manchester United"))
+        assertFalse(activeTeamsString.contains("Liverpool"))
+        assertFalse(activeTeamsString.contains("Chelsea"))
+        assertFalse(activeTeamsString.contains("Manchester City"))
+        assertFalse(activeTeamsString.contains("Arsenal"))
+    }
+
+    @Test
+    fun `listEuropeanTeams returns no european teams when ArrayList is empty`() {
+        assertEquals(0, noTeams!!.numberOfEuropeanTeams())
+        assertFalse(
+            noTeams!!.listEuropeanTeams().lowercase().contains("no european teams")
+        )
+    }
+
+    @Test
+    fun `listEuropeanTeams returns european teams when ArrayList has european teams stored`() {
+        assertEquals(0, populatedTeams!!.numberOfEuropeanTeams())
+        val archivedTeamsString = populatedTeams!!.listEuropeanTeams().lowercase(Locale.getDefault())
+        assertFalse(archivedTeamsString.contains("Manchester United"))
+        assertFalse(archivedTeamsString.contains("Liverpool"))
+        assertFalse(archivedTeamsString.contains("Chelsea"))
+        assertFalse(archivedTeamsString.contains("Manchester City"))
+        assertFalse(archivedTeamsString.contains("Arsenal"))
     }
 }

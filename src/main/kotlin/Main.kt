@@ -60,7 +60,6 @@ fun addTeam(){
 }
 
 fun listTeams(){
-    //logger.info { "listTeams() function invoked" }
     println(teamAPI.listAllTeams())
 }
 
