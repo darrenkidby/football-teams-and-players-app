@@ -101,4 +101,42 @@ class TeamAPITest {
         assertFalse(archivedTeamsString.contains("Manchester City"))
         assertFalse(archivedTeamsString.contains("Arsenal"))
     }
+
+    @Test
+    fun `listTeamsByLeagueForm returns No Teams when ArrayList is empty`() {
+        assertEquals(0, noTeams!!.numberOfTeams())
+        assertFalse(noTeams!!.listTeamByLeagueForm(1).lowercase().contains("no Teams")
+        )
+    }
+
+    @Test
+    fun `listTeamsByLeagueForm returns no teams when no teams of that league form exist`() {
+        assertEquals(5, populatedTeams!!.numberOfTeams())
+        val form2String = populatedTeams!!.listTeamByLeagueForm(2).lowercase()
+        assertTrue(form2String.contains("no teams"))
+        assertTrue(form2String.contains("2"))
+    }
+
+    @Test
+    fun `listTeamsByLeagueForm returns all teams that match that league form when notes of that league form exist`() {
+        assertEquals(5, populatedTeams!!.numberOfTeams())
+        val form1String = populatedTeams!!.listTeamByLeagueForm(1).lowercase()
+        assertFalse(form1String.contains("1st Team"))
+        assertFalse(form1String.contains("League Position 1"))
+        assertFalse(form1String.contains("Manchester United"))
+        assertFalse(form1String.contains("Liverpool"))
+        assertFalse(form1String.contains("Chelsea"))
+        assertFalse(form1String.contains("Real Madrid"))
+        assertFalse(form1String.contains("Waterford FC"))
+
+
+        val form4String = populatedTeams!!.listTeamByLeagueForm(4).lowercase(Locale.getDefault())
+        assertFalse(form4String.contains("2nd Team"))
+        assertFalse(form4String.contains("League Position 8"))
+        assertFalse(form4String.contains("Manchester United"))
+        assertFalse(form4String.contains("Liverpool"))
+        assertFalse(form4String.contains("Chelsea"))
+        assertFalse(form4String.contains("Real Madrid"))
+        assertFalse(form4String.contains("Waterford FC"))
+    }
 }
