@@ -83,4 +83,34 @@ class TeamAPI {
         }
         return counter
     }
+
+    fun listTeamByLeagueForm(form: Int): String {
+        return if (teams.isEmpty()) {
+            "No teams stored"
+        } else {
+            var listOfTeams = ""
+            for (i in teams.indices) {
+                if (teams[i].leaguePosition == form) {
+                    listOfTeams +=
+                        """$i: ${teams[i]}
+                        """.trimIndent()
+                }
+            }
+            if (listOfTeams.equals("")) {
+                "No teams with league form: $form"
+            } else {
+                "${numberOfTeamsByLeagueForm(form)} notes with priority $form: $listOfTeams"
+            }
+        }
+    }
+
+    fun numberOfTeamsByLeagueForm(form: Int): Int {
+        var counter = 0
+        for (team in teams) {
+            if (team.leaguePosition == form) {
+                counter++
+            }
+        }
+        return counter
+    }
 }
