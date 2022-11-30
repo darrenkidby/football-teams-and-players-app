@@ -126,4 +126,9 @@ class TeamAPI {
 
         return false
     }
+
+    fun isValidIndex(index: Int) :Boolean{
+        return isValidListIndex(index, teams);
+    }
+
 }

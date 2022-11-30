@@ -46,9 +46,9 @@ fun runMenu() {
 
 fun addTeam(){
     //logger.info { "addTeam() function invoked" }
-    val teamName = readNextLine("Enter name of the Team: ")
-    val teamCountry  = readNextLine("Enter the Country the Team plays in: ")
-    val leagueName = readNextLine("Enter name of the League the team plays in: ")
+    val teamName = readNextLine("Enter a Team Name: ")
+    val teamCountry  = readNextLine("Enter the Country of the Team: ")
+    val leagueName = readNextLine("Enter the League of the Team: ")
     val leaguePosition = readNextInt("Enter a position (Champions-1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20-Relegated): ")
     val isTeamAdded = teamAPI.add(Team(teamName, teamCountry, leagueName, leaguePosition, false))
 
@@ -63,8 +63,26 @@ fun listTeams(){
     println(teamAPI.listAllTeams())
 }
 
-fun updateTeam(){
-    logger.info { "updateTeam() function invoked" }
+fun updateTeam() {
+    //logger.info { "updateTeams() function invoked" }
+    listTeams()
+    if (teamAPI.numberOfTeams() > 0) {
+        val indexToUpdate = readNextInt("Enter the index of the team you want to update: ")
+        if (teamAPI.isValidIndex(indexToUpdate)) {
+            val teamName = readNextLine("Enter a Team Name: ")
+            val teamCountry = readNextLine("Enter the Country of the Team: ")
+            val leagueName = readNextLine("Enter the League of the Team: ")
+            val leaguePosition = readNextInt("Enter a position (Champions-1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20-Relegated): ")
+
+            if (teamAPI.updateTeam(indexToUpdate, Team(teamName, teamCountry, leagueName, leaguePosition, false))){
+                println("Update Successful")
+            } else {
+                println("Update Failed")
+            }
+        } else {
+            println("There are no teams for this index number")
+        }
+    }
 }
 
 fun removeTeam(){
