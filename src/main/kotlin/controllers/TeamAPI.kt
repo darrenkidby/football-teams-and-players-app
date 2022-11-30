@@ -31,7 +31,6 @@ class TeamAPI {
         } else null
     }
 
-    //utility method to determine if an index is valid in a list.
     fun isValidListIndex(index: Int, list: List<Any>): Boolean {
         return (index >= 0 && index < list.size)
     }
@@ -113,4 +112,23 @@ class TeamAPI {
         }
         return counter
     }
+
+    fun updateTeam(indexToUpdate: Int, team: Team?): Boolean {
+        val foundTeam = findTeam(indexToUpdate)
+
+        if ((foundTeam != null) && (team != null)) {
+            foundTeam.teamName = team.teamName
+            foundTeam.teamCountry = team.teamCountry
+            foundTeam.leagueName = team.leagueName
+            foundTeam.leaguePosition = team.leaguePosition
+            return true
+        }
+
+        return false
+    }
+
+    fun isValidIndex(index: Int) :Boolean{
+        return isValidListIndex(index, teams);
+    }
+
 }
