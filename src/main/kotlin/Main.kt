@@ -37,7 +37,7 @@ fun runMenu() {
             1  -> addTeam()
             2  -> listTeams()
             3  -> updateTeam()
-            4  -> removeTeam()
+            4  -> expelledTeam()
             0  -> exitApp()
             else -> println("Invalid option entered: ${option}")
         }
@@ -85,8 +85,20 @@ fun updateTeam() {
     }
 }
 
-fun removeTeam(){
-    logger.info { "removeTeam() function invoked" }
+fun expelledTeam(){
+    //logger.info { "expelledTeams() function invoked" }
+    listTeams()
+    if (teamAPI.numberOfTeams() > 0) {
+
+        val expelledTeamWithIndex = readNextInt("Enter the index of the Team to expel from football: ")
+
+        val expelTheTeam = teamAPI.expelTeam(expelledTeamWithIndex)
+        if (expelTheTeam != null) {
+            println("Successfully Expelled! Team Expelled From Football: ${expelTheTeam.teamName}")
+        } else {
+            println("Unsuccessfully Expelled!")
+        }
+    }
 }
 
 fun exitApp(){
