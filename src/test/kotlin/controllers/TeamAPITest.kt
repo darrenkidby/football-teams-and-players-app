@@ -4,6 +4,7 @@ import models.Team
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import java.util.*
 import kotlin.test.assertEquals
@@ -138,5 +139,28 @@ class TeamAPITest {
         assertFalse(form4String.contains("Chelsea"))
         assertFalse(form4String.contains("Real Madrid"))
         assertFalse(form4String.contains("Waterford FC"))
+    }
+
+    @Nested
+    inner class UpdateTeams {
+        @Test
+        fun `updating a team that does not exist returns false`(){
+            assertFalse(populatedTeams!!.updateTeam(6, Team("Manu", "UK", "EPL", 1,  false)))
+            assertFalse(populatedTeams!!.updateTeam(-1, Team("Man City", "UK", "EPL", 2, false)))
+            assertFalse(noTeams!!.updateTeam(0, Team("Liverpool FC", "UK", "EPL", 3, false)))
+        }
+
+        @Test
+        fun `updating a team that exists returns true and updates`() {
+            assertEquals(irishTeam, populatedTeams!!.findTeam(4))
+            assertEquals("Waterford FC", populatedTeams!!.findTeam(4)!!.teamName)
+            assertEquals(9, populatedTeams!!.findTeam(4)!!.leaguePosition)
+            assertEquals("Ireland", populatedTeams!!.findTeam(4)!!.teamCountry)
+
+            assertTrue(populatedTeams!!.updateTeam(4, Team("Chelsea FC", "UK", "EPL", 4, false)))
+            assertEquals("Chelsea FC", populatedTeams!!.findTeam(4)!!.teamName)
+            assertEquals(4, populatedTeams!!.findTeam(4)!!.leaguePosition)
+            assertEquals("UK", populatedTeams!!.findTeam(4)!!.teamCountry)
+        }
     }
 }
