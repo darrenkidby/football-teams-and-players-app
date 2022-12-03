@@ -28,8 +28,9 @@ fun mainMenu() : Int {
           |   2) List all teams            |
           |   3) Update a team             |
           |   4) Remove a team             |
-          |   5) Save a team               |
-          |   6) Load a team               |
+          |   5) Add team to Europe        |
+          |   6) Save a team               |
+          |   7) Load a team               |
           ----------------------------------
           |   0) Exit                      |
           ----------------------------------
@@ -44,8 +45,9 @@ fun runMenu() {
             2  -> listTeams()
             3  -> updateTeam()
             4  -> expelTeam()
-            5  -> saveTeam()
-            6  -> loadTeam()
+            5  -> europeanTeam()
+            6  -> saveTeam()
+            7  -> loadTeam()
             0  -> exitApp()
             else -> println("Invalid option entered: ${option}")
         }
@@ -105,6 +107,24 @@ fun expelTeam(){
             println("Successfully Expelled! Team Expelled From Football: ${expelTheTeam.teamName}")
         } else {
             println("Unsuccessfully Expelled!")
+        }
+    }
+}
+
+fun listNonEuropeanTeams() {
+    println(teamAPI.listNonEuropeanTeams())
+}
+
+fun europeanTeam() {
+    listNonEuropeanTeams()
+    if (teamAPI.numberOfNonEuropeanTeams() > 0) {
+
+        val indexToEuropeanTeam = readNextInt("Enter the index of the team to add to Europe: ")
+
+        if (teamAPI.europeanTeam(indexToEuropeanTeam)) {
+            println("Team Successfully Added to Europe!")
+        } else {
+            println("Team Unsuccessfully Added to Europe!")
         }
     }
 }
