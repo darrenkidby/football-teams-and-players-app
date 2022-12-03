@@ -1,13 +1,15 @@
 import controllers.TeamAPI
 import models.Team
 import mu.KotlinLogging
+import persistence.XMLSerializer
 import java.lang.System.exit
 import utils.ScannerInput
 import utils.ScannerInput.readNextInt
 import utils.ScannerInput.readNextLine
+import java.io.File
 
 private val logger = KotlinLogging.logger {}
-private val teamAPI = TeamAPI()
+private val teamAPI = TeamAPI(XMLSerializer(File("teams.xml")))
 
 fun main(args: Array<String>) {
     runMenu()
@@ -24,6 +26,8 @@ fun mainMenu() : Int {
           |   2) List all teams            |
           |   3) Update a team             |
           |   4) Remove a team             |
+          |   5) Save a team               |
+          |   6) Load a team               |
           ----------------------------------
           |   0) Exit                      |
           ----------------------------------
@@ -37,7 +41,9 @@ fun runMenu() {
             1  -> addTeam()
             2  -> listTeams()
             3  -> updateTeam()
-            4  -> expelledTeam()
+            4  -> expelTeam()
+            5  -> saveTeam()
+            6  -> loadTeam()
             0  -> exitApp()
             else -> println("Invalid option entered: ${option}")
         }
@@ -85,7 +91,7 @@ fun updateTeam() {
     }
 }
 
-fun expelledTeam(){
+fun expelTeam(){
     //logger.info { "expelledTeams() function invoked" }
     listTeams()
     if (teamAPI.numberOfTeams() > 0) {
@@ -98,6 +104,22 @@ fun expelledTeam(){
         } else {
             println("Unsuccessfully Expelled!")
         }
+    }
+}
+
+fun saveTeam() {
+    try {
+        teamAPI.store()
+    } catch (e: Exception) {
+        System.err.println("Error writing to file: $e")
+    }
+}
+
+fun loadTeam() {
+    try {
+        teamAPI.load()
+    } catch (e: Exception) {
+        System.err.println("Error reading from file: $e")
     }
 }
 

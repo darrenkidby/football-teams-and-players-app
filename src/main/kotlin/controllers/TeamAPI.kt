@@ -1,8 +1,11 @@
 package controllers
 
 import models.Team
+import persistence.Serializer
 
-class TeamAPI {
+class TeamAPI(serializerType: Serializer){
+
+    private var serializer: Serializer = serializerType
     private var teams = ArrayList<Team>()
 
     fun add(team: Team): Boolean {
@@ -135,6 +138,16 @@ class TeamAPI {
         return if (isValidListIndex(indexToExpel, teams)) {
             teams.removeAt(indexToExpel)
         } else null
+    }
+
+    @Throws(Exception::class)
+    fun load() {
+        teams = serializer.read() as ArrayList<Team>
+    }
+
+    @Throws(Exception::class)
+    fun store() {
+        serializer.write(teams)
     }
 
 }
