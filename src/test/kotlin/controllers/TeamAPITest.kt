@@ -7,6 +7,9 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import persistence.JSONSerializer
+import persistence.XMLSerializer
+import java.io.File
 import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -18,8 +21,8 @@ class TeamAPITest {
     private var italianTeam: Team? = null
     private var germanTeam: Team? = null
     private var irishTeam: Team? = null
-    private var populatedTeams: TeamAPI? = TeamAPI()
-    private var noTeams: TeamAPI? = TeamAPI()
+    private var populatedTeams: TeamAPI? = TeamAPI(XMLSerializer(File("teams.xml")))
+    private var noTeams: TeamAPI? = TeamAPI(XMLSerializer(File("teams.xml")))
 
     @BeforeEach
     fun setup(){
@@ -184,4 +187,43 @@ class TeamAPITest {
             assertEquals(3, populatedTeams!!.numberOfTeams())
         }
     }
+
+    @Nested
+    inner class PersistenceTests {
+
+        @Test
+        fun `saving and loading an empty collection in XML doesn't crash app`() {
+
+            val storingTeams = TeamAPI(XMLSerializer(File("teams.xml")))
+            storingTeams.store()
+
+            val loadedTeams = TeamAPI(XMLSerializer(File("teams.xml")))
+            loadedTeams.load()
+
+            assertEquals(0, storingTeams.numberOfTeams())
+            assertEquals(0, loadedTeams.numberOfTeams())
+            assertEquals(storingTeams.numberOfTeams(), loadedTeams.numberOfTeams())
+        }
+
+        @Test
+        fun `saving and loading an loaded collection in XML doesn't loose data`() {
+
+            val storingTeams = TeamAPI(XMLSerializer(File("teams.xml")))
+            storingTeams.add(englishTeam!!)
+            storingTeams.add(spanishTeam!!)
+            storingTeams.add(italianTeam!!)
+            storingTeams.store()
+
+            val loadedTeams = TeamAPI(XMLSerializer(File("teams.xml")))
+            loadedTeams.load()
+
+            assertEquals(3, storingTeams.numberOfTeams())
+            assertEquals(3, loadedTeams.numberOfTeams())
+            assertEquals(storingTeams.numberOfTeams(), loadedTeams.numberOfTeams())
+            assertEquals(storingTeams.findTeam(0), loadedTeams.findTeam(0))
+            assertEquals(storingTeams.findTeam(1), loadedTeams.findTeam(1))
+            assertEquals(storingTeams.findTeam(2), loadedTeams.findTeam(2))
+        }
+    }
+
 }
