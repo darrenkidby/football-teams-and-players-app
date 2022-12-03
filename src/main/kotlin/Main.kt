@@ -1,6 +1,7 @@
 import controllers.TeamAPI
 import models.Team
 import mu.KotlinLogging
+import persistence.JSONSerializer
 import persistence.XMLSerializer
 import java.lang.System.exit
 import utils.ScannerInput
@@ -9,7 +10,8 @@ import utils.ScannerInput.readNextLine
 import java.io.File
 
 private val logger = KotlinLogging.logger {}
-private val teamAPI = TeamAPI(XMLSerializer(File("teams.xml")))
+//private val teamAPI = TeamAPI(XMLSerializer(File("teams.xml")))
+private val teamAPI = TeamAPI(JSONSerializer(File("teams.json")))
 
 fun main(args: Array<String>) {
     runMenu()
