@@ -134,6 +134,17 @@ class TeamAPI(serializerType: Serializer){
         return isValidListIndex(index, teams);
     }
 
+    fun europeanTeam(indexToEuropeanTeam: Int): Boolean {
+        if (isValidIndex(indexToEuropeanTeam)) {
+            val teamToEuropeanTeam = teams[indexToEuropeanTeam]
+            if (!teamToEuropeanTeam.isTeamPlayingEurope) {
+                teamToEuropeanTeam.isTeamPlayingEurope = true
+                return true
+            }
+        }
+        return false
+    }
+
     fun expelTeam(indexToExpel: Int): Team? {
         return if (isValidListIndex(indexToExpel, teams)) {
             teams.removeAt(indexToExpel)

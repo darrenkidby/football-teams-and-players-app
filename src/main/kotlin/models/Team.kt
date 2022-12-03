@@ -5,5 +5,5 @@ data class Team(
     var teamCountry: String,
     var leagueName: String,
     var leaguePosition: Int,
-    val isTeamPlayingEurope :Boolean){
+    var isTeamPlayingEurope :Boolean){
 }
