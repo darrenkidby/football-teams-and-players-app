@@ -131,4 +131,10 @@ class TeamAPI {
         return isValidListIndex(index, teams);
     }
 
+    fun expelTeam(indexToExpel: Int): Team? {
+        return if (isValidListIndex(indexToExpel, teams)) {
+            teams.removeAt(indexToExpel)
+        } else null
+    }
+
 }
