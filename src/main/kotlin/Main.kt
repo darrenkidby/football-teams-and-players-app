@@ -37,6 +37,28 @@ fun mainMenu() : Int {
           ==>> """.trimMargin(">"))
 }
 
+fun listTeams() {
+    if (teamAPI.numberOfTeams() > 0) {
+        val option = readNextInt(
+            """
+                  > --------------------------------
+                  > |   1) Show All Teams          |
+                  > |   2) Show Non-European Teams |
+                  > |   3) Show European Teams     |
+                  > --------------------------------
+         > ==>> """.trimMargin(">"))
+
+        when (option) {
+            1 -> listAllTeams();
+            2 -> listNonEuropeanTeams();
+            3 -> listEuropeanTeams();
+            else -> println("Invalid option entered: " + option);
+        }
+    } else {
+        println("Option Invalid - No notes stored");
+    }
+}
+
 fun runMenu() {
     do {
         val option = mainMenu()
@@ -67,10 +89,6 @@ fun addTeam(){
     } else {
         println("Add Failed")
     }
-}
-
-fun listTeams(){
-    println(teamAPI.listAllTeams())
 }
 
 fun updateTeam() {
@@ -143,6 +161,14 @@ fun loadTeam() {
     } catch (e: Exception) {
         System.err.println("Error reading from file: $e")
     }
+}
+
+fun listAllTeams() {
+    println(teamAPI.listAllTeams())
+}
+
+fun listEuropeanTeams() {
+    println(teamAPI.listEuropeanTeams())
 }
 
 fun exitApp(){
