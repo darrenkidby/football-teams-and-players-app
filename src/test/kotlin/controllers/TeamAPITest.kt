@@ -261,4 +261,27 @@ class TeamAPITest {
         assertEquals(storingTeams.findTeam(1), loadedTeams.findTeam(1))
         assertEquals(storingTeams.findTeam(2), loadedTeams.findTeam(2))
     }
+
+    @Nested
+    inner class EuropeanTeams {
+        @Test
+        fun `Adding a Team to Europe that does not exist returns false`(){
+            assertFalse(populatedTeams!!.europeanTeam(6))
+            assertFalse(populatedTeams!!.europeanTeam(-1))
+            assertFalse(noTeams!!.europeanTeam(0))
+        }
+
+        @Test
+        fun `Adding a Team to Europe That is Already Added to Europe returns false`(){
+            assertFalse(populatedTeams!!.findTeam(0)!!.isTeamPlayingEurope)
+            assertTrue(populatedTeams!!.europeanTeam(0))
+        }
+
+        @Test
+        fun `Adding a non-European Team that exists returns true and adds to Europe`() {
+            assertFalse(populatedTeams!!.findTeam(1)!!.isTeamPlayingEurope)
+            assertTrue(populatedTeams!!.europeanTeam(1))
+            assertTrue(populatedTeams!!.findTeam(1)!!.isTeamPlayingEurope)
+        }
+    }
 }
