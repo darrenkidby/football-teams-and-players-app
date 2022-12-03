@@ -2,6 +2,7 @@ package controllers
 
 import models.Team
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
@@ -161,6 +162,26 @@ class TeamAPITest {
             assertEquals("Chelsea FC", populatedTeams!!.findTeam(4)!!.teamName)
             assertEquals(4, populatedTeams!!.findTeam(4)!!.leaguePosition)
             assertEquals("UK", populatedTeams!!.findTeam(4)!!.teamCountry)
+        }
+    }
+
+    @Nested
+    inner class ExpelTeams {
+
+        @Test
+        fun `expelling a Team that does not exist, returns null`() {
+            assertNull(noTeams!!.expelTeam(0))
+            assertNull(populatedTeams!!.expelTeam(-1))
+            assertNull(populatedTeams!!.expelTeam(5))
+        }
+
+        @Test
+        fun `expelling a team that exists expel and returns deleted object`() {
+            assertEquals(5, populatedTeams!!.numberOfTeams())
+            assertEquals(irishTeam, populatedTeams!!.expelTeam(4))
+            assertEquals(4, populatedTeams!!.numberOfTeams())
+            assertEquals(englishTeam, populatedTeams!!.expelTeam(0))
+            assertEquals(3, populatedTeams!!.numberOfTeams())
         }
     }
 }
