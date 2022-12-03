@@ -21,8 +21,10 @@ class TeamAPITest {
     private var italianTeam: Team? = null
     private var germanTeam: Team? = null
     private var irishTeam: Team? = null
-    private var populatedTeams: TeamAPI? = TeamAPI(XMLSerializer(File("teams.xml")))
-    private var noTeams: TeamAPI? = TeamAPI(XMLSerializer(File("teams.xml")))
+    //private var populatedTeams: TeamAPI? = TeamAPI(XMLSerializer(File("teams.xml")))
+    //private var noTeams: TeamAPI? = TeamAPI(XMLSerializer(File("teams.xml")))
+    private var populatedTeams: TeamAPI? = TeamAPI(JSONSerializer(File("teams.json")))
+    private var noTeams: TeamAPI? = TeamAPI(JSONSerializer(File("teams.json")))
 
     @BeforeEach
     fun setup(){
@@ -226,4 +228,37 @@ class TeamAPITest {
         }
     }
 
+    @Test
+    fun `saving and loading an empty collection in JSON doesn't crash app`() {
+
+        val storingTeams = TeamAPI(JSONSerializer(File("teams.json")))
+        storingTeams.store()
+
+        val loadedTeams = TeamAPI(JSONSerializer(File("teams.json")))
+        loadedTeams.load()
+
+        assertEquals(0, storingTeams.numberOfTeams())
+        assertEquals(0, loadedTeams.numberOfTeams())
+        assertEquals(storingTeams.numberOfTeams(), loadedTeams.numberOfTeams())
+    }
+
+    @Test
+    fun `saving and loading a loaded collection in JSON doesn't loose data`() {
+
+        val storingTeams = TeamAPI(JSONSerializer(File("teams.json")))
+        storingTeams.add(englishTeam!!)
+        storingTeams.add(spanishTeam!!)
+        storingTeams.add(italianTeam!!)
+        storingTeams.store()
+
+        val loadedTeams = TeamAPI(JSONSerializer(File("teams.json")))
+        loadedTeams.load()
+
+        assertEquals(3, storingTeams.numberOfTeams())
+        assertEquals(3, loadedTeams.numberOfTeams())
+        assertEquals(storingTeams.numberOfTeams(), loadedTeams.numberOfTeams())
+        assertEquals(storingTeams.findTeam(0), loadedTeams.findTeam(0))
+        assertEquals(storingTeams.findTeam(1), loadedTeams.findTeam(1))
+        assertEquals(storingTeams.findTeam(2), loadedTeams.findTeam(2))
+    }
 }
