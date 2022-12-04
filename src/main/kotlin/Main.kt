@@ -37,7 +37,7 @@ fun mainMenu() : Int {
           ------------------------------------
           | PLAYER MENU                      |
           |   9) Add a player to team        |
-          |   10) Update player information   |
+          |   10) Update player information  |
           |   11) Remove player from team    |
           |   12) Is player a youth player?  |
           |   13) Is player a retired legend?|
@@ -83,8 +83,9 @@ fun runMenu() {
             7  -> saveTeam()
             8  -> loadTeam()
             9  -> addPlayerToTeam()
-            10  -> updatePlayerInTeam()
+            10 -> updatePlayerInTeam()
             11 -> removePlayerFromTeam()
+            12 -> youthPlayer()
             14 -> searchPlayers()
             99 -> dummyData()
             0  -> exitApp()
@@ -251,6 +252,13 @@ fun searchPlayers() {
     } else {
         println(searchResults)
     }
+}
+
+fun youthPlayer(){
+    if (teamAPI.numberOfYouthPlayers() > 0) {
+        println("Total Youth Players: ${teamAPI.numberOfYouthPlayers()}")
+    }
+    println(teamAPI.listYouthPlayers())
 }
 
 private fun askUserToChoosePlayer(team: Team): Player? {

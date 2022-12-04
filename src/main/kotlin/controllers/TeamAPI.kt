@@ -173,6 +173,22 @@ class TeamAPI(serializerType: Serializer){
         }
     }
 
+    fun listYouthPlayers(): String =
+        if (numberOfTeams() == 0) "No teams stored"
+        else {
+            var listOfYouthPlayers = ""
+            for (team in teams) {
+            }
+            listOfYouthPlayers
+        }
+
+    fun numberOfYouthPlayers(): Int {
+        var numberOfYouthPlayers = 0
+        for (team in teams) {
+        }
+        return numberOfYouthPlayers
+    }
+
     @Throws(Exception::class)
     fun load() {
         teams = serializer.read() as ArrayList<Team>
