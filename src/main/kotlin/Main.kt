@@ -20,20 +20,30 @@ fun main(args: Array<String>) {
 fun mainMenu() : Int {
     return ScannerInput.readNextInt("""
                                             
-          ----------------------------------
-          |       FOOTBALL TEAM APP        |
-          ----------------------------------
-          | TEAM MENU                      |
-          |   1) Add a team                |
-          |   2) List all teams            |
-          |   3) Update a team             |
-          |   4) Remove a team             |
-          |   5) Add team to Europe        |
-          |   6) Save a team               |
-          |   7) Load a team               |
-          ----------------------------------
-          |   0) Exit                      |
-          ----------------------------------
+          ------------------------------------
+          |        FOOTBALL TEAM APP         |
+          ------------------------------------
+          | TEAM MENU                        |
+          |   1) Add a team                  |
+          |   2) List teams                  |
+          |   3) Update a team               |
+          |   4) Remove a team               |
+          |   5) Add team to Europe          |
+          |   6) Save a team                 |
+          |   7) Load a team                 |
+          ------------------------------------
+          | PLAYER MENU                      |
+          |   8) Add a player to team        |
+          |   9) List players                |
+          |   10) Update player information  |
+          |   11) Remove player from team    |
+          |   12) Is player a youth player?  |
+          |   13) Is player a retired legend?|
+          |   14) Save player                |
+          |   15) Load player                |
+          ------------------------------------
+          |   0) Exit                        |
+          ------------------------------------
           ==>> """.trimMargin(">"))
 }
 
@@ -55,7 +65,7 @@ fun listTeams() {
             else -> println("Invalid option entered: " + option);
         }
     } else {
-        println("Option Invalid - No notes stored");
+        println("Option Invalid - No teamss stored");
     }
 }
 
