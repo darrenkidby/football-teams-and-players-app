@@ -82,6 +82,7 @@ fun runMenu() {
             6  -> saveTeam()
             7  -> loadTeam()
             8  -> addPlayerToTeam()
+            10 -> updatePlayerInTeam()
             0  -> exitApp()
             else -> println("Invalid option entered: ${option}")
         }
@@ -189,6 +190,27 @@ private fun addPlayerToTeam() {
         if (team.addPlayer(Player(playerName = readNextLine("\t Player Name: "), playerAge = readNextInt("\t Player Age: "), playerPosition = readNextLine("\t Player Position: "), playerCost = readNextLine("\t Player Cost: "), playerWage = readNextLine("\t Player Wage: "))))
             println("Add Successful!")
         else println("Add NOT Successful")
+    }
+}
+
+fun updatePlayerInTeam() {
+    val team: Team? = askUserToChooseNonEuropeanTeam()
+    if (team != null) {
+        val player: Player? = askUserToChoosePlayer(team)
+        if (player != null) {
+            val newName = readNextLine("Enter new Name: ")
+            val newAge = readNextInt("Enter new Age: ")
+            val newPosition = readNextLine("Enter new Position: ")
+            val newCost = readNextLine("Enter new Cost: ")
+            val newWage = readNextLine("Enter new Wage: ")
+            if (team.update(player.playerId, Player(playerName = newName, playerAge = newAge, playerPosition = newPosition, playerCost = newCost, playerWage = newWage))) {
+                println("Player information updated")
+            } else {
+                println("Player information NOT updated")
+            }
+        } else {
+            println("Invalid Player Id")
+        }
     }
 }
 
