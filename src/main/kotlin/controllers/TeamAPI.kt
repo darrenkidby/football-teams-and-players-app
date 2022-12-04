@@ -2,6 +2,7 @@ package controllers
 
 import models.Team
 import persistence.Serializer
+import utils.Utilities
 
 class TeamAPI(serializerType: Serializer){
 
@@ -149,6 +150,27 @@ class TeamAPI(serializerType: Serializer){
         return if (isValidListIndex(indexToExpel, teams)) {
             teams.removeAt(indexToExpel)
         } else null
+    }
+
+    fun searchTeamByName(searchString: String) =
+        Utilities.formatListString(
+            teams.filter { team -> team.teamName.contains(searchString, ignoreCase = true) }
+        )
+
+    fun searchPlayerByName(searchString: String): String {
+        return if (numberOfTeams() == 0) "No teams stored"
+        else {
+            var listOfTeams = ""
+            for (team in teams) {
+                for (player in team.players) {
+                    if (player.playerName.contains(searchString, ignoreCase = true)) {
+                        listOfTeams += "${team.teamId}: ${team.teamName} \n\t${player}\n"
+                    }
+                }
+            }
+            if (listOfTeams == "") "No players found for: $searchString"
+            else listOfTeams
+        }
     }
 
     @Throws(Exception::class)
