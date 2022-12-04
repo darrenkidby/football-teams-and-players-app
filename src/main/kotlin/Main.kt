@@ -1,4 +1,5 @@
 import controllers.TeamAPI
+import models.Player
 import models.Team
 import mu.KotlinLogging
 import persistence.JSONSerializer
@@ -80,6 +81,7 @@ fun runMenu() {
             5  -> europeanTeam()
             6  -> saveTeam()
             7  -> loadTeam()
+            8  -> addPlayerToTeam()
             0  -> exitApp()
             else -> println("Invalid option entered: ${option}")
         }
@@ -92,7 +94,7 @@ fun addTeam(){
     val teamCountry  = readNextLine("Enter the Country of the Team: ")
     val leagueName = readNextLine("Enter the League of the Team: ")
     val leaguePosition = readNextInt("Enter a position (Champions-1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20-Relegated): ")
-    val isTeamAdded = teamAPI.add(Team(teamName, teamCountry, leagueName, leaguePosition, false))
+    val isTeamAdded = teamAPI.add(Team(0, teamName, teamCountry, leagueName, leaguePosition, false))
 
     if (isTeamAdded) {
         println("Added Successfully")
@@ -112,7 +114,7 @@ fun updateTeam() {
             val leagueName = readNextLine("Enter the League of the Team: ")
             val leaguePosition = readNextInt("Enter a position (Champions-1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20-Relegated): ")
 
-            if (teamAPI.updateTeam(indexToUpdate, Team(teamName, teamCountry, leagueName, leaguePosition, false))){
+            if (teamAPI.updateTeam(indexToUpdate, Team(0, teamName, teamCountry, leagueName, leaguePosition, false))){
                 println("Update Successful")
             } else {
                 println("Update Failed")
@@ -179,6 +181,43 @@ fun listAllTeams() {
 
 fun listEuropeanTeams() {
     println(teamAPI.listEuropeanTeams())
+}
+
+private fun addPlayerToTeam() {
+    val team: Team? = askUserToChooseNonEuropeanTeam()
+    if (team != null) {
+        if (team.addPlayer(Player(playerName = readNextLine("\t Player Name: "), playerAge = readNextInt("\t Player Age: "), playerPosition = readNextLine("\t Player Position: "), playerCost = readNextLine("\t Player Cost: "), playerWage = readNextLine("\t Player Wage: "))))
+            println("Add Successful!")
+        else println("Add NOT Successful")
+    }
+}
+
+private fun askUserToChoosePlayer(team: Team): Player? {
+    if (team.numberOfPlayers() > 0) {
+        print(team.listPlayers())
+        return team.findOne(readNextInt("\nEnter the id of the player: "))
+    }
+    else{
+        println ("No players for chosen team")
+        return null
+    }
+}
+
+private fun askUserToChooseNonEuropeanTeam(): Team? {
+    listNonEuropeanTeams()
+    if (teamAPI.numberOfNonEuropeanTeams() > 0) {
+        val team = teamAPI.findTeam(readNextInt("\nEnter the id of the team: "))
+        if (team != null) {
+            if (team.isTeamPlayingEurope) {
+                println("Team is a European Team")
+            } else {
+                return team
+            }
+        } else {
+            println("Team id is not valid")
+        }
+    }
+    return null
 }
 
 fun exitApp(){
