@@ -30,16 +30,18 @@ fun mainMenu() : Int {
           |   3) Update a team               |
           |   4) Remove a team               |
           |   5) Add team to Europe          |
-          |   6) Save a team                 |
-          |   7) Load a team                 |
+          |   6) Search team                 |
+          |   7) Save a team                 |
+          |   8) Load a team                 |
           |   99) Dummy Data                 |
           ------------------------------------
           | PLAYER MENU                      |
-          |   8) Add a player to team        |
-          |   9) Update player information   |
-          |   10) Remove player from team    |
-          |   11) Is player a youth player?  |
-          |   12) Is player a retired legend?|
+          |   9) Add a player to team        |
+          |   10) Update player information   |
+          |   11) Remove player from team    |
+          |   12) Is player a youth player?  |
+          |   13) Is player a retired legend?|
+          |   14) Search Player              |
           ------------------------------------
           |   0) Exit                        |
           ------------------------------------
@@ -77,11 +79,13 @@ fun runMenu() {
             3  -> updateTeam()
             4  -> expelTeam()
             5  -> europeanTeam()
-            6  -> saveTeam()
-            7  -> loadTeam()
-            8  -> addPlayerToTeam()
-            9  -> updatePlayerInTeam()
-            10 -> removePlayerFromTeam()
+            6  -> searchTeams()
+            7  -> saveTeam()
+            8  -> loadTeam()
+            9  -> addPlayerToTeam()
+            10  -> updatePlayerInTeam()
+            11 -> removePlayerFromTeam()
+            14 -> searchPlayers()
             99 -> dummyData()
             0  -> exitApp()
             else -> println("Invalid option entered: ${option}")
@@ -160,6 +164,16 @@ fun europeanTeam() {
     }
 }
 
+fun searchTeams() {
+    val searchName = readNextLine("Enter the Team Name to search by: ")
+    val searchResults = teamAPI.searchTeamByName(searchName)
+    if (searchResults.isEmpty()) {
+        println("No teams found")
+    } else {
+        println(searchResults)
+    }
+}
+
 fun saveTeam() {
     try {
         teamAPI.store()
@@ -226,6 +240,16 @@ fun removePlayerFromTeam() {
                 println("Remove NOT Successful")
             }
         }
+    }
+}
+
+fun searchPlayers() {
+    val searchName = readNextLine("Enter the Players Name to search by: ")
+    val searchResults = teamAPI.searchPlayerByName(searchName)
+    if (searchResults.isEmpty()) {
+        println("No Player found")
+    } else {
+        println(searchResults)
     }
 }
 
