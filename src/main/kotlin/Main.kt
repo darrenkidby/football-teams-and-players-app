@@ -32,16 +32,14 @@ fun mainMenu() : Int {
           |   5) Add team to Europe          |
           |   6) Save a team                 |
           |   7) Load a team                 |
+          |   99) Dummy Data                 |
           ------------------------------------
           | PLAYER MENU                      |
           |   8) Add a player to team        |
-          |   9) List players                |
-          |   10) Update player information  |
-          |   11) Remove player from team    |
-          |   12) Is player a youth player?  |
-          |   13) Is player a retired legend?|
-          |   14) Save player                |
-          |   15) Load player                |
+          |   9) Update player information   |
+          |   10) Remove player from team    |
+          |   11) Is player a youth player?  |
+          |   12) Is player a retired legend?|
           ------------------------------------
           |   0) Exit                        |
           ------------------------------------
@@ -82,7 +80,9 @@ fun runMenu() {
             6  -> saveTeam()
             7  -> loadTeam()
             8  -> addPlayerToTeam()
-            10 -> updatePlayerInTeam()
+            9  -> updatePlayerInTeam()
+            10 -> removePlayerFromTeam()
+            99 -> dummyData()
             0  -> exitApp()
             else -> println("Invalid option entered: ${option}")
         }
@@ -214,6 +214,21 @@ fun updatePlayerInTeam() {
     }
 }
 
+fun removePlayerFromTeam() {
+    val team: Team? = askUserToChooseNonEuropeanTeam()
+    if (team != null) {
+        val player: Player? = askUserToChoosePlayer(team)
+        if (player != null) {
+            val isRemoved = team.remove(player.playerId)
+            if (isRemoved) {
+                println("Remove Successful!")
+            } else {
+                println("Remove NOT Successful")
+            }
+        }
+    }
+}
+
 private fun askUserToChoosePlayer(team: Team): Player? {
     if (team.numberOfPlayers() > 0) {
         print(team.listPlayers())
@@ -240,6 +255,31 @@ private fun askUserToChooseNonEuropeanTeam(): Team? {
         }
     }
     return null
+}
+
+fun dummyData() {
+    teamAPI.add(Team(0, "Arsenal", "England", "Premier League", 1, true))
+    teamAPI.add(Team(1, "Manchester City", "England", "Premier League", 2, true))
+    teamAPI.add(Team(2, "Newcastle United", "England", "Premier League", 3, false))
+    teamAPI.add(Team(3, "Tottenham", "England", "Premier League", 4, true))
+    teamAPI.add(Team(4, "Manchester United", "England", "Premier League", 5, true))
+    teamAPI.add(Team(5, "Liverpool", "England", "Premier League", 6, true))
+    teamAPI.add(Team(6, "Brighton", "England", "Premier League", 7, false))
+    teamAPI.add(Team(7, "Chelsea", "England", "Premier League", 8, true))
+    teamAPI.add(Team(8, "Fulham", "England", "Premier League", 9, false))
+    teamAPI.add(Team(9, "Brentford", "England", "Premier League", 10, false))
+    teamAPI.add(Team(10, "Crystal Palace", "England", "Premier League", 11, false))
+    teamAPI.add(Team(11, "Aston Villa", "England", "Premier League", 12, false))
+    teamAPI.add(Team(12, "Leicester City", "England", "Premier League", 13, false))
+    teamAPI.add(Team(13, "Bournemouth", "England", "Premier League", 14, false))
+    teamAPI.add(Team(14, "Leeds United", "England", "Premier League", 15, false))
+    teamAPI.add(Team(15, "West Ham", "England", "Premier League", 16, true))
+    teamAPI.add(Team(16, "Everton", "England", "Premier League", 17, false))
+    teamAPI.add(Team(17, "Nottingham Forest", "England", "Premier League", 18, false))
+    teamAPI.add(Team(18, "Southampton", "England", "Premier League", 19, false))
+    teamAPI.add(Team(19, "Wolves", "England", "Premier League", 20, false))
+
+
 }
 
 fun exitApp(){

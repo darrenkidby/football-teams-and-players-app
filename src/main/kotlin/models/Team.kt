@@ -50,7 +50,7 @@ data class Team(var teamId: Int = 0,
         else  Utilities.formatSetString(players)
 
     override fun toString(): String {
-        val europeanTeam = if (isTeamPlayingEurope) 'Y' else 'N'
-        return "$teamId: $teamName, Country($teamCountry), League($leagueName), Position($leaguePosition), Europe($isTeamPlayingEurope) \n${listPlayers()}"
+        val europeanTeam = if (isTeamPlayingEurope) "Yes" else "No"
+        return "$teamName, Country($teamCountry), League($leagueName), Position($leaguePosition), Europe($europeanTeam) \n${listPlayers()}"
     }
 }
