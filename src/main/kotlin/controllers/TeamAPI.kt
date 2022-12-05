@@ -178,6 +178,11 @@ class TeamAPI(serializerType: Serializer){
         else {
             var listOfYouthPlayers = ""
             for (team in teams) {
+                    for (player in team.players) {
+                        if (!player.isPlayerYouth) {
+                            listOfYouthPlayers += team.teamName + ": " + player.playerName + "\n"
+                        }
+                    }
             }
             listOfYouthPlayers
         }
@@ -185,8 +190,39 @@ class TeamAPI(serializerType: Serializer){
     fun numberOfYouthPlayers(): Int {
         var numberOfYouthPlayers = 0
         for (team in teams) {
+            for (player in team.players) {
+                if (!player.isPlayerYouth) {
+                    numberOfYouthPlayers++
+                }
+            }
         }
         return numberOfYouthPlayers
+    }
+
+    fun listRetiredPlayers(): String =
+        if (numberOfTeams() == 0) "No teams stored"
+        else {
+            var listOfRetiredPlayers = ""
+            for (team in teams) {
+                for (player in team.players) {
+                    if (!player.isPlayerRetired) {
+                        listOfRetiredPlayers += team.teamName + ": " + player.playerName + "\n"
+                    }
+                }
+            }
+            listOfRetiredPlayers
+        }
+
+    fun numberOfRetiredPlayers(): Int {
+        var numberOfRetiredPlayers = 0
+        for (team in teams) {
+            for (player in team.players) {
+                if (!player.isPlayerRetired) {
+                    numberOfRetiredPlayers++
+                }
+            }
+        }
+        return numberOfRetiredPlayers
     }
 
     @Throws(Exception::class)
