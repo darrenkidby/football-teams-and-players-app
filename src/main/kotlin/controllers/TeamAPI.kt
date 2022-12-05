@@ -102,13 +102,10 @@ class TeamAPI(serializerType: Serializer){
     }
 
     fun numberOfTeamsByLeagueForm(form: Int): Int {
-        var counter = 0
-        for (team in teams) {
-            if (team.leaguePosition == form) {
-                counter++
-            }
-        }
-        return counter
+        return teams.stream()
+            .filter{team: Team -> team.leaguePosition == form}
+            .count()
+            .toInt()
     }
 
     fun updateTeam(indexToUpdate: Int, team: Team?): Boolean {
