@@ -8,6 +8,7 @@ data class Team(var teamId: Int = 0,
     var leagueName: String,
     var leaguePosition: Int,
     var isTeamPlayingEurope :Boolean,
+    var isTeamExtinct :Boolean,
     var players : MutableSet<Player> = mutableSetOf()){
 
     private var lastPlayerId = 0
@@ -51,7 +52,8 @@ data class Team(var teamId: Int = 0,
 
     override fun toString(): String {
         val europeanTeam = if (isTeamPlayingEurope) "Yes" else "No"
-        return "$teamName, Country($teamCountry), League($leagueName), Position($leaguePosition), Europe($europeanTeam) \n${listPlayers()}"
+        val extinctTeam = if (isTeamExtinct) "Yes" else "No"
+        return "$teamName, Country($teamCountry), League($leagueName), Position($leaguePosition), Europe($europeanTeam), Extinct($extinctTeam) \n${listPlayers()}"
     }
 
     fun checkYouthTeam(): Boolean {

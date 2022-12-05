@@ -54,6 +54,8 @@ fun listTeams() {
                   > |   1) Show All Teams          |
                   > |   2) Show Non-European Teams |
                   > |   3) Show European Teams     |
+                  > |   4) Show Active Teams       |
+                  > |   5) Show Extinct Teams      |
                   > --------------------------------
                   > |   0) Exit                    |
                   > --------------------------------
@@ -63,6 +65,8 @@ fun listTeams() {
             1 -> listAllTeams();
             2 -> listNonEuropeanTeams();
             3 -> listEuropeanTeams();
+            4 -> listActiveTeams();
+            5 -> listExtinctTeams();
             else -> println("Invalid option entered: " + option);
         }
     } else {
@@ -81,9 +85,10 @@ fun teamsMenu() {
           |   3) Update a team               |
           |   4) Remove a team               |
           |   5) Add team to Europe          |
-          |   6) Search team                 |
-          |   7) Save a team                 |
-          |   8) Load a team                 |
+          |   6) Make team Extinct           |
+          |   7) Search team                 |
+          |   8) Save a team                 |
+          |   9) Load a team                 |
           |   99) Dummy Data                 |
           ------------------------------------
           |   0) Exit                        |
@@ -96,9 +101,10 @@ fun teamsMenu() {
             3  -> updateTeam()
             4  -> expelTeam()
             5  -> europeanTeam()
-            6  -> searchTeams()
-            7  -> saveTeam()
-            8  -> loadTeam()
+            6  -> extinctTeam()
+            7  -> searchTeams()
+            8  -> saveTeam()
+            9  -> loadTeam()
             99 -> dummyData()
             0  -> exitApp()
             else -> println("Invalid option entered: " + option);
@@ -146,7 +152,7 @@ fun addTeam(){
     val teamCountry  = readNextLine("Enter the Country of the Team: ")
     val leagueName = readNextLine("Enter the League of the Team: ")
     val leaguePosition = readNextInt("Enter a position (Champions-1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20-Relegated): ")
-    val isTeamAdded = teamAPI.add(Team(0, teamName, teamCountry, leagueName, leaguePosition, false))
+    val isTeamAdded = teamAPI.add(Team(0, teamName, teamCountry, leagueName, leaguePosition, false, false))
 
     if (isTeamAdded) {
         println("Added Successfully")
@@ -166,7 +172,7 @@ fun updateTeam() {
             val leagueName = readNextLine("Enter the League of the Team: ")
             val leaguePosition = readNextInt("Enter a position (Champions-1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20-Relegated): ")
 
-            if (teamAPI.updateTeam(indexToUpdate, Team(0, teamName, teamCountry, leagueName, leaguePosition, false))){
+            if (teamAPI.updateTeam(indexToUpdate, Team(0, teamName, teamCountry, leagueName, leaguePosition, false, false))){
                 println("Update Successful")
             } else {
                 println("Update Failed")
@@ -197,6 +203,10 @@ fun listNonEuropeanTeams() {
     println(teamAPI.listNonEuropeanTeams())
 }
 
+fun listActiveTeams() {
+    println(teamAPI.listActiveTeams())
+}
+
 fun europeanTeam() {
     listNonEuropeanTeams()
     if (teamAPI.numberOfNonEuropeanTeams() > 0) {
@@ -207,6 +217,20 @@ fun europeanTeam() {
             println("Team Successfully Added to Europe!")
         } else {
             println("Team Unsuccessfully Added to Europe!")
+        }
+    }
+}
+
+fun extinctTeam() {
+    listActiveTeams()
+    if (teamAPI.numberOfActiveTeams() > 0) {
+
+        val indexToExtinct = readNextInt("Enter the index of the extinct team: ")
+
+        if (teamAPI.extinctTeam(indexToExtinct)) {
+            println("Team is Extinct!")
+        } else {
+            println("Team is not Extinct!")
         }
     }
 }
@@ -243,6 +267,10 @@ fun listAllTeams() {
 
 fun listEuropeanTeams() {
     println(teamAPI.listEuropeanTeams())
+}
+
+fun listExtinctTeams() {
+    println(teamAPI.listExtinctTeams())
 }
 
 private fun addPlayerToTeam() {
@@ -366,12 +394,12 @@ private fun askUserToChoosePlayer(team: Team): Player? {
 }
 
 private fun askUserToChooseTeam(): Team? {
-    listNonEuropeanTeams()
-    if (teamAPI.numberOfNonEuropeanTeams() > 0) {
+    listActiveTeams()
+    if (teamAPI.numberOfActiveTeams() > 0) {
         val team = teamAPI.findTeam(readNextInt("\nEnter the id of the team: "))
         if (team != null) {
-            if (team.isTeamPlayingEurope) {
-                println("Team is playing Europe")
+            if (team.isTeamExtinct) {
+                println("Team is extinct")
             } else {
                 return team
             }
@@ -383,26 +411,26 @@ private fun askUserToChooseTeam(): Team? {
 }
 
 fun dummyData() {
-    teamAPI.add(Team(0, "Arsenal", "England", "Premier League", 1, true))
-    teamAPI.add(Team(1, "Manchester City", "England", "Premier League", 2, true))
-    teamAPI.add(Team(2, "Newcastle United", "England", "Premier League", 3, false))
-    teamAPI.add(Team(3, "Tottenham", "England", "Premier League", 4, true))
-    teamAPI.add(Team(4, "Manchester United", "England", "Premier League", 5, true))
-    teamAPI.add(Team(5, "Liverpool", "England", "Premier League", 6, true))
-    teamAPI.add(Team(6, "Brighton", "England", "Premier League", 7, false))
-    teamAPI.add(Team(7, "Chelsea", "England", "Premier League", 8, true))
-    teamAPI.add(Team(8, "Fulham", "England", "Premier League", 9, false))
-    teamAPI.add(Team(9, "Brentford", "England", "Premier League", 10, false))
-    teamAPI.add(Team(10, "Crystal Palace", "England", "Premier League", 11, false))
-    teamAPI.add(Team(11, "Aston Villa", "England", "Premier League", 12, false))
-    teamAPI.add(Team(12, "Leicester City", "England", "Premier League", 13, false))
-    teamAPI.add(Team(13, "Bournemouth", "England", "Premier League", 14, false))
-    teamAPI.add(Team(14, "Leeds United", "England", "Premier League", 15, false))
-    teamAPI.add(Team(15, "West Ham", "England", "Premier League", 16, true))
-    teamAPI.add(Team(16, "Everton", "England", "Premier League", 17, false))
-    teamAPI.add(Team(17, "Nottingham Forest", "England", "Premier League", 18, false))
-    teamAPI.add(Team(18, "Southampton", "England", "Premier League", 19, false))
-    teamAPI.add(Team(19, "Wolves", "England", "Premier League", 20, false))
+    teamAPI.add(Team(0, "Arsenal", "England", "Premier League", 1, true, false))
+    teamAPI.add(Team(1, "Manchester City", "England", "Premier League", 2, true, false))
+    teamAPI.add(Team(2, "Newcastle United", "England", "Premier League", 3, false, false))
+    teamAPI.add(Team(3, "Tottenham", "England", "Premier League", 4, true, false))
+    teamAPI.add(Team(4, "Manchester United", "England", "Premier League", 5, true, false))
+    teamAPI.add(Team(5, "Liverpool", "England", "Premier League", 6, true, false))
+    teamAPI.add(Team(6, "Brighton", "England", "Premier League", 7, false, false))
+    teamAPI.add(Team(7, "Chelsea", "England", "Premier League", 8, true, false))
+    teamAPI.add(Team(8, "Fulham", "England", "Premier League", 9, false, false))
+    teamAPI.add(Team(9, "Brentford", "England", "Premier League", 10, false, false))
+    teamAPI.add(Team(10, "Crystal Palace", "England", "Premier League", 11, false, false))
+    teamAPI.add(Team(11, "Aston Villa", "England", "Premier League", 12, false, false))
+    teamAPI.add(Team(12, "Leicester City", "England", "Premier League", 13, false, false))
+    teamAPI.add(Team(13, "Bournemouth", "England", "Premier League", 14, false, false))
+    teamAPI.add(Team(14, "Leeds United", "England", "Premier League", 15, false, false))
+    teamAPI.add(Team(15, "West Ham", "England", "Premier League", 16, true, false))
+    teamAPI.add(Team(16, "Everton", "England", "Premier League", 17, false, false))
+    teamAPI.add(Team(17, "Nottingham Forest", "England", "Premier League", 18, false, false))
+    teamAPI.add(Team(18, "Southampton", "England", "Premier League", 19, false, false))
+    teamAPI.add(Team(19, "Wolves", "England", "Premier League", 20, false, false))
 
 
 }
