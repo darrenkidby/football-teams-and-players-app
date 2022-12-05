@@ -53,4 +53,15 @@ data class Team(var teamId: Int = 0,
         val europeanTeam = if (isTeamPlayingEurope) "Yes" else "No"
         return "$teamName, Country($teamCountry), League($leagueName), Position($leaguePosition), Europe($europeanTeam) \n${listPlayers()}"
     }
+
+    fun checkYouthTeam(): Boolean {
+        if (players.isNotEmpty()) {
+            for (player in players) {
+                if (!player.isPlayerYouth) {
+                    return false
+                }
+            }
+        }
+        return true
+    }
 }
