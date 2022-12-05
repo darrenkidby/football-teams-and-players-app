@@ -25,30 +25,25 @@ fun mainMenu() : Int {
           ------------------------------------
           |        FOOTBALL TEAM APP         |
           ------------------------------------
-          | TEAM MENU                        |
-          |   1) Add a team                  |
-          |   2) List teams                  |
-          |   3) Update a team               |
-          |   4) Remove a team               |
-          |   5) Add team to Europe          |
-          |   6) Search team                 |
-          |   7) Save a team                 |
-          |   8) Load a team                 |
-          |   99) Dummy Data                 |
+          |   1) TEAM MENU                   |
           ------------------------------------
-          | PLAYER MENU                      |
-          |   9) Add a player to team        |
-          |   10) Update player information  |
-          |   11) Remove player from team    |
-          |   12) Is player a youth player?  |
-          |   13) List youth players         |
-          |   14) Is player a retired legend?|
-          |   15) List retired players       |
-          |   16) Search Player              |
+          |   2) PLAYER MENU                 |
           ------------------------------------
-          |   0) Exit                        |
+          |   0) EXIT                        |
           ------------------------------------
           ==>> """.trimMargin(">"))
+}
+
+fun runMenu() {
+    do {
+        val option = mainMenu()
+        when (option) {
+            1  -> teamsMenu()
+            2  -> playersMenu()
+            0  -> exitApp()
+            else -> println("Invalid option entered: ${option}")
+        }
+    } while (true)
 }
 
 fun listTeams() {
@@ -60,7 +55,9 @@ fun listTeams() {
                   > |   2) Show Non-European Teams |
                   > |   3) Show European Teams     |
                   > --------------------------------
-         > ==>> """.trimMargin(">"))
+                  > |   0) Exit                    |
+                  > --------------------------------
+                  > ==>> """.trimMargin(">"))
 
         when (option) {
             1 -> listAllTeams();
@@ -73,9 +70,26 @@ fun listTeams() {
     }
 }
 
-fun runMenu() {
-    do {
-        val option = mainMenu()
+fun teamsMenu() {
+    if (teamAPI.numberOfTeams() >= 0) {
+        val option = readNextInt(
+            """
+          ------------------------------------
+          | TEAM MENU                        |
+          |   1) Add a team                  |
+          |   2) List teams                  |
+          |   3) Update a team               |
+          |   4) Remove a team               |
+          |   5) Add team to Europe          |
+          |   6) Search team                 |
+          |   7) Save a team                 |
+          |   8) Load a team                 |
+          |   99) Dummy Data                 |
+          ------------------------------------
+          |   0) Exit                        |
+          ------------------------------------
+          ==>> """.trimMargin(">"))
+
         when (option) {
             1  -> addTeam()
             2  -> listTeams()
@@ -85,19 +99,45 @@ fun runMenu() {
             6  -> searchTeams()
             7  -> saveTeam()
             8  -> loadTeam()
-            9  -> addPlayerToTeam()
-            10 -> updatePlayerInTeam()
-            11 -> removePlayerFromTeam()
-            12 -> youthTeamStatus()
-            13 -> listYouthPlayer()
-            14 -> retiredStatus()
-            15 -> listRetiredPlayer()
-            16 -> searchPlayers()
             99 -> dummyData()
             0  -> exitApp()
-            else -> println("Invalid option entered: ${option}")
+            else -> println("Invalid option entered: " + option);
         }
-    } while (true)
+    }
+}
+
+fun playersMenu() {
+    if (teamAPI.numberOfTeams() >= 0) {
+        val option = readNextInt(
+            """
+          ------------------------------------
+          | PLAYER MENU                      |
+          |   1) Add a player to team        |
+          |   2) Update player information   |
+          |   3) Remove player from team     |
+          |   4) Is player a youth player?   |
+          |   5) List youth players          |
+          |   6) Is player a retired legend? |
+          |   7) List retired players        |
+          |   8) Search Player               |
+          ------------------------------------
+          |   0) Exit                        |
+          ------------------------------------
+          ==>> """.trimMargin(">"))
+
+        when (option) {
+            1  -> addPlayerToTeam()
+            2 -> updatePlayerInTeam()
+            3 -> removePlayerFromTeam()
+            4 -> youthTeamStatus()
+            5 -> listYouthPlayer()
+            6 -> retiredStatus()
+            7 -> listRetiredPlayer()
+            8 -> searchPlayers()
+            0  -> exitApp()
+            else -> println("Invalid option entered: " + option);
+        }
+    }
 }
 
 fun addTeam(){
@@ -326,11 +366,18 @@ private fun askUserToChoosePlayer(team: Team): Player? {
 }
 
 private fun askUserToChooseTeam(): Team? {
-    listAllTeams()
-    if (teamAPI.numberOfTeams() > 0) {
+    listNonEuropeanTeams()
+    if (teamAPI.numberOfNonEuropeanTeams() > 0) {
         val team = teamAPI.findTeam(readNextInt("\nEnter the id of the team: "))
+        if (team != null) {
+            if (team.isTeamPlayingEurope) {
+                println("Team is playing Europe")
+            } else {
+                return team
+            }
     } else {
-            println("Team id is not valid")
+        println("Team id is not valid")
+         }
     }
     return null
 }

@@ -15,7 +15,8 @@ class TeamAPI(serializerType: Serializer){
 
     fun listAllTeams(): String =
         if (teams.isEmpty()) "No teams stored"
-        else Utilities.formatListString(teams)
+        else teams.joinToString (separator = "\n") {team ->
+            teams.indexOf(team).toString() + ": " + team.toString() }
 
     fun numberOfTeams(): Int {
         return teams.size
@@ -33,24 +34,23 @@ class TeamAPI(serializerType: Serializer){
 
     fun listNonEuropeanTeams(): String =
         if (numberOfNonEuropeanTeams() == 0) "No teams stored"
-            else Utilities.formatListString(teams.filter { team -> !team.isTeamPlayingEurope})
+        else Utilities.formatListString(teams.filter { team -> !team.isTeamPlayingEurope})
 
     fun listEuropeanTeams(): String =
         if (numberOfEuropeanTeams() == 0) "No teams stored"
-        else Utilities.formatListString(teams.filter { team -> team.isTeamPlayingEurope})
-
+        else Utilities.formatListString(teams.filter { team -> !team.isTeamPlayingEurope})
 
     fun numberOfEuropeanTeams(): Int = teams.count  {team: Team -> !team.isTeamPlayingEurope}
 
-    fun numberOfNonEuropeanTeams(): Int = teams.count {team: Team -> !team.isTeamPlayingEurope}
+    fun numberOfNonEuropeanTeams(): Int = teams.count{team: Team -> !team.isTeamPlayingEurope}
 
     fun listTeamByLeagueForm(form: Int): String =
         if (teams.isEmpty()) "No teams stored"
-            else {
-                val listOfTeams = Utilities.formatListString(teams.filter{ team -> team.leaguePosition == form})
-                if (listOfTeams.equals("")) "No teams have form: $form"
-                else "${numberOfTeamsByLeagueForm(form)} teams with good form $form: $listOfTeams"
-            }
+        else {
+            val listOfTeams = Utilities.formatListString(teams.filter{ team -> team.leaguePosition == form})
+            if (listOfTeams.equals("")) "No teams have form: $form"
+            else "${numberOfTeamsByLeagueForm(form)} teams with good form $form: $listOfTeams"
+        }
 
     fun numberOfTeamsByLeagueForm(form: Int): Int = teams.count {team: Team -> team.leaguePosition == form}
 
