@@ -15,8 +15,7 @@ class TeamAPI(serializerType: Serializer){
 
     fun listAllTeams(): String =
         if (teams.isEmpty()) "No teams stored"
-    else teams.joinToString (separator = "\n") {team ->
-            teams.indexOf(team).toString() + ": " + team.toString() }
+        else Utilities.formatListString(teams)
 
     fun numberOfTeams(): Int {
         return teams.size
@@ -34,55 +33,26 @@ class TeamAPI(serializerType: Serializer){
 
     fun listNonEuropeanTeams(): String =
         if (numberOfNonEuropeanTeams() == 0) "No teams stored"
-            else teams.joinToString (separator = "\n") {team ->
-                teams.indexOf(team).toString() + ": " + team.toString() }
+            else Utilities.formatListString(teams.filter { team -> !team.isTeamPlayingEurope})
 
     fun listEuropeanTeams(): String =
         if (numberOfEuropeanTeams() == 0) "No teams stored"
-        else teams.joinToString (separator = "\n") {team ->
-            teams.indexOf(team).toString() + ": " + team.toString() }
+        else Utilities.formatListString(teams.filter { team -> team.isTeamPlayingEurope})
 
 
-    fun numberOfEuropeanTeams(): Int {
-        return teams.stream()
-            .filter{team: Team -> !team.isTeamPlayingEurope}
-            .count()
-            .toInt()
-    }
+    fun numberOfEuropeanTeams(): Int = teams.count  {team: Team -> !team.isTeamPlayingEurope}
 
-    fun numberOfNonEuropeanTeams(): Int {
-        return teams.stream()
-            .filter{team: Team -> !team.isTeamPlayingEurope}
-            .count()
-            .toInt()
-    }
+    fun numberOfNonEuropeanTeams(): Int = teams.count {team: Team -> !team.isTeamPlayingEurope}
 
-    fun listTeamByLeagueForm(form: Int): String {
-        return if (teams.isEmpty()) {
-            "No teams stored"
-        } else {
-            var listOfTeams = ""
-            for (i in teams.indices) {
-                if (teams[i].leaguePosition == form) {
-                    listOfTeams +=
-                        """$i: ${teams[i]}
-                        """.trimIndent()
-                }
+    fun listTeamByLeagueForm(form: Int): String =
+        if (teams.isEmpty()) "No teams stored"
+            else {
+                val listOfTeams = Utilities.formatListString(teams.filter{ team -> team.leaguePosition == form})
+                if (listOfTeams.equals("")) "No teams have form: $form"
+                else "${numberOfTeamsByLeagueForm(form)} teams with good form $form: $listOfTeams"
             }
-            if (listOfTeams.equals("")) {
-                "No teams with league form: $form"
-            } else {
-                "${numberOfTeamsByLeagueForm(form)} notes with priority $form: $listOfTeams"
-            }
-        }
-    }
 
-    fun numberOfTeamsByLeagueForm(form: Int): Int {
-        return teams.stream()
-            .filter{team: Team -> team.leaguePosition == form}
-            .count()
-            .toInt()
-    }
+    fun numberOfTeamsByLeagueForm(form: Int): Int = teams.count {team: Team -> team.leaguePosition == form}
 
     fun updateTeam(indexToUpdate: Int, team: Team?): Boolean {
         val foundTeam = findTeam(indexToUpdate)
