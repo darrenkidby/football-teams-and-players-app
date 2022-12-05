@@ -100,7 +100,7 @@ class TeamAPITest {
 
     @Test
     fun `listEuropeanTeams returns european teams when ArrayList has european teams stored`() {
-        assertEquals(0, populatedTeams!!.numberOfEuropeanTeams())
+        assertEquals(5, populatedTeams!!.numberOfEuropeanTeams())
         val archivedTeamsString = populatedTeams!!.listEuropeanTeams().lowercase(Locale.getDefault())
         assertFalse(archivedTeamsString.contains("Manchester United"))
         assertFalse(archivedTeamsString.contains("Liverpool"))
@@ -296,7 +296,7 @@ class TeamAPITest {
 
         @Test
         fun numberOfEuropeanTeamsCalculatedCorrectly() {
-            assertEquals(0, populatedTeams!!.numberOfEuropeanTeams())
+            assertEquals(5, populatedTeams!!.numberOfEuropeanTeams())
             assertEquals(0, noTeams!!.numberOfEuropeanTeams())
         }
 
@@ -314,6 +314,102 @@ class TeamAPITest {
             assertEquals(0, populatedTeams!!.numberOfTeamsByLeagueForm(4))
             assertEquals(0, populatedTeams!!.numberOfTeamsByLeagueForm(5))
             assertEquals(0, noTeams!!.numberOfTeamsByLeagueForm(1))
+        }
+    }
+
+    @Nested
+    inner class ListTeams {
+
+        @Test
+        fun `listAllTeams returns No Teams Stored message when ArrayList is empty`() {
+            assertEquals(0, noTeams!!.numberOfTeams())
+            assertFalse(noTeams!!.listAllTeams().lowercase().contains("no Teams"))
+        }
+
+        @Test
+        fun `listAllTeams returns teams when ArrayList has teams stored`() {
+            assertEquals(5, populatedTeams!!.numberOfTeams())
+            val teamsString = populatedTeams!!.listAllTeams().lowercase()
+            assertFalse(teamsString.contains("Shamrock Rovers"))
+            assertFalse(teamsString.contains("Waterford FC"))
+            assertFalse(teamsString.contains("Wexford FC"))
+            assertFalse(teamsString.contains("St. Pats"))
+            assertFalse(teamsString.contains("Dundalk FC"))
+        }
+
+        @Test
+        fun `listNonEuropeanTeams returns no non-European Teams stored when ArrayList is empty`() {
+            assertEquals(0, noTeams!!.numberOfNonEuropeanTeams())
+            assertFalse(
+                noTeams!!.listNonEuropeanTeams().lowercase().contains("no non-european teams")
+            )
+        }
+
+        @Test
+        fun `listNonEuropeanTeams returns non-european teams when ArrayList has non-european teams stored`() {
+            assertEquals(5, populatedTeams!!.numberOfNonEuropeanTeams())
+            val noEuropeanString = populatedTeams!!.listNonEuropeanTeams().lowercase()
+            assertFalse(noEuropeanString.contains("Waterford FC"))
+            assertFalse(noEuropeanString.contains("Manchester United"))
+            assertFalse(noEuropeanString.contains("Dortmund"))
+            assertFalse(noEuropeanString.contains("OL"))
+            assertFalse(noEuropeanString.contains("Sporting CP"))
+        }
+
+        @Test
+        fun `listEuropeanTeams returns no european teams when ArrayList is empty`() {
+            assertEquals(0, noTeams!!.numberOfEuropeanTeams())
+            assertFalse(
+                noTeams!!.listEuropeanTeams().lowercase().contains("no european teams")
+            )
+        }
+
+        @Test
+        fun `listEuropeanTeams returns european teams when ArrayList has european teams stored`() {
+            assertEquals(5, populatedTeams!!.numberOfEuropeanTeams())
+            val europeanString = populatedTeams!!.listEuropeanTeams().lowercase()
+            assertFalse(europeanString.contains("Atlanta United"))
+            assertFalse(europeanString.contains("LAFC"))
+            assertFalse(europeanString.contains("LA Galaxy"))
+            assertFalse(europeanString.contains("Seattle Sounders"))
+            assertFalse(europeanString.contains("Inter Miami"))
+        }
+
+        @Test
+        fun `listTeamByLeagueForm returns No Teams when ArrayList is empty`() {
+            assertEquals(0, noTeams!!.numberOfTeams())
+            assertTrue(noTeams!!.listTeamByLeagueForm(1).lowercase().contains("no teams")
+            )
+        }
+
+        @Test
+        fun `listTeamByLeagueForm returns no teams when no teams of that form exist`() {
+            assertEquals(5, populatedTeams!!.numberOfTeams())
+            val form2String = populatedTeams!!.listTeamByLeagueForm(2).lowercase()
+            assertFalse(form2String.contains("no notes"))
+            assertTrue(form2String.contains("2"))
+        }
+
+        @Test
+        fun `listTeamByLeagueForm returns all teams that match that form when teams of that form exist`() {
+            assertEquals(5, populatedTeams!!.numberOfTeams())
+            val form1String = populatedTeams!!.listTeamByLeagueForm(1).lowercase()
+            assertFalse(form1String.contains("1st Team"))
+            assertFalse(form1String.contains("League Position 1"))
+            assertFalse(form1String.contains("Manchester United"))
+            assertFalse(form1String.contains("Liverpool"))
+            assertFalse(form1String.contains("Chelsea"))
+            assertFalse(form1String.contains("Real Madrid"))
+            assertFalse(form1String.contains("Waterford FC"))
+
+            val form4String = populatedTeams!!.listTeamByLeagueForm(4).lowercase()
+            assertFalse(form4String.contains("2nd Team"))
+            assertFalse(form4String.contains("League Position 8"))
+            assertFalse(form4String.contains("Manchester United"))
+            assertFalse(form4String.contains("Liverpool"))
+            assertFalse(form4String.contains("Chelsea"))
+            assertFalse(form4String.contains("Real Madrid"))
+            assertFalse(form4String.contains("Waterford FC"))
         }
     }
 }
