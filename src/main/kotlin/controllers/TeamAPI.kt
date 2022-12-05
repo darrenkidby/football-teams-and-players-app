@@ -38,11 +38,23 @@ class TeamAPI(serializerType: Serializer){
 
     fun listEuropeanTeams(): String =
         if (numberOfEuropeanTeams() == 0) "No teams stored"
-        else Utilities.formatListString(teams.filter { team -> !team.isTeamPlayingEurope})
+        else Utilities.formatListString(teams.filter { team -> team.isTeamPlayingEurope})
 
     fun numberOfEuropeanTeams(): Int = teams.count  {team: Team -> !team.isTeamPlayingEurope}
 
     fun numberOfNonEuropeanTeams(): Int = teams.count{team: Team -> !team.isTeamPlayingEurope}
+
+    fun listActiveTeams(): String =
+        if (numberOfActiveTeams() == 0) "No teams stored"
+        else Utilities.formatListString(teams.filter { team -> !team.isTeamExtinct})
+
+    fun listExtinctTeams(): String =
+        if (numberOfExtinctTeams() == 0) "No teams stored"
+        else Utilities.formatListString(teams.filter { team -> team.isTeamExtinct})
+
+    fun numberOfExtinctTeams(): Int = teams.count  {team: Team -> !team.isTeamExtinct}
+
+    fun numberOfActiveTeams(): Int = teams.count{team: Team -> !team.isTeamExtinct}
 
     fun listTeamByLeagueForm(form: Int): String =
         if (teams.isEmpty()) "No teams stored"
@@ -77,6 +89,17 @@ class TeamAPI(serializerType: Serializer){
             val teamToEuropeanTeam = teams[indexToEuropeanTeam]
             if (!teamToEuropeanTeam.isTeamPlayingEurope) {
                 teamToEuropeanTeam.isTeamPlayingEurope = true
+                return true
+            }
+        }
+        return false
+    }
+
+    fun extinctTeam(indexToExtinct: Int): Boolean {
+        if (isValidIndex(indexToExtinct)) {
+            val teamToExtinct = teams[indexToExtinct]
+            if (!teamToExtinct.isTeamExtinct) {
+                teamToExtinct.isTeamExtinct = true
                 return true
             }
         }
