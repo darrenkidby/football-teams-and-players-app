@@ -13,17 +13,10 @@ class TeamAPI(serializerType: Serializer){
         return teams.add(team)
     }
 
-    fun listAllTeams(): String {
-        return if (teams.isEmpty()) {
-            "No teams stored"
-        } else {
-            var listOfTeams = ""
-            for (i in teams.indices) {
-                listOfTeams += "${i}: ${teams[i]} \n"
-            }
-            listOfTeams
-        }
-    }
+    fun listAllTeams(): String =
+        if (teams.isEmpty()) "No teams stored"
+    else teams.joinToString (separator = "\n") {team ->
+            teams.indexOf(team).toString() + ": " + team.toString() }
 
     fun numberOfTeams(): Int {
         return teams.size
@@ -39,33 +32,16 @@ class TeamAPI(serializerType: Serializer){
         return (index >= 0 && index < list.size)
     }
 
-    fun listNonEuropeanTeams(): String {
-        return if (numberOfNonEuropeanTeams() == 0) {
-            "No teams stored"
-        } else {
-            var listOfNonEuropeanTeams = ""
-            for (team in teams) {
-                if (!team.isTeamPlayingEurope) {
-                    listOfNonEuropeanTeams += "${teams.indexOf(team)}: $team \n"
-                }
-            }
-            listOfNonEuropeanTeams
-        }
-    }
+    fun listNonEuropeanTeams(): String =
+        if (numberOfNonEuropeanTeams() == 0) "No teams stored"
+            else teams.joinToString (separator = "\n") {team ->
+                teams.indexOf(team).toString() + ": " + team.toString() }
 
-    fun listEuropeanTeams(): String {
-        return if (numberOfEuropeanTeams() == 0) {
-            "No teams stored"
-        } else {
-            var listOfEuropeanTeams = ""
-            for (team in teams) {
-                if (team.isTeamPlayingEurope) {
-                    listOfEuropeanTeams += "${teams.indexOf(team)}: $team \n"
-                }
-            }
-            listOfEuropeanTeams
-        }
-    }
+    fun listEuropeanTeams(): String =
+        if (numberOfEuropeanTeams() == 0) "No teams stored"
+        else teams.joinToString (separator = "\n") {team ->
+            teams.indexOf(team).toString() + ": " + team.toString() }
+
 
     fun numberOfEuropeanTeams(): Int {
         return teams.stream()
