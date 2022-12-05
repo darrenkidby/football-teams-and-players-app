@@ -106,7 +106,7 @@ fun addTeam(){
     val teamCountry  = readNextLine("Enter the Country of the Team: ")
     val leagueName = readNextLine("Enter the League of the Team: ")
     val leaguePosition = readNextInt("Enter a position (Champions-1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20-Relegated): ")
-    val isTeamAdded = teamAPI.add(Team(teamName, teamCountry, leagueName, leaguePosition, false))
+    val isTeamAdded = teamAPI.add(Team(0, teamName, teamCountry, leagueName, leaguePosition, false))
 
     if (isTeamAdded) {
         println("Added Successfully")
@@ -126,7 +126,7 @@ fun updateTeam() {
             val leagueName = readNextLine("Enter the League of the Team: ")
             val leaguePosition = readNextInt("Enter a position (Champions-1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20-Relegated): ")
 
-            if (teamAPI.updateTeam(indexToUpdate, Team(teamName, teamCountry, leagueName, leaguePosition, false))){
+            if (teamAPI.updateTeam(indexToUpdate, Team(0, teamName, teamCountry, leagueName, leaguePosition, false))){
                 println("Update Successful")
             } else {
                 println("Update Failed")
@@ -336,26 +336,26 @@ private fun askUserToChooseTeam(): Team? {
 }
 
 fun dummyData() {
-    teamAPI.add(Team("Arsenal", "England", "Premier League", 1, true))
-    teamAPI.add(Team("Manchester City", "England", "Premier League", 2, true))
-    teamAPI.add(Team("Newcastle United", "England", "Premier League", 3, false))
-    teamAPI.add(Team("Tottenham", "England", "Premier League", 4, true))
-    teamAPI.add(Team("Manchester United", "England", "Premier League", 5, true))
-    teamAPI.add(Team("Liverpool", "England", "Premier League", 6, true))
-    teamAPI.add(Team("Brighton", "England", "Premier League", 7, false))
-    teamAPI.add(Team("Chelsea", "England", "Premier League", 8, true))
-    teamAPI.add(Team("Fulham", "England", "Premier League", 9, false))
-    teamAPI.add(Team("Brentford", "England", "Premier League", 10, false))
-    teamAPI.add(Team("Crystal Palace", "England", "Premier League", 11, false))
-    teamAPI.add(Team("Aston Villa", "England", "Premier League", 12, false))
-    teamAPI.add(Team("Leicester City", "England", "Premier League", 13, false))
-    teamAPI.add(Team("Bournemouth", "England", "Premier League", 14, false))
-    teamAPI.add(Team("Leeds United", "England", "Premier League", 15, false))
-    teamAPI.add(Team("West Ham", "England", "Premier League", 16, true))
-    teamAPI.add(Team("Everton", "England", "Premier League", 17, false))
-    teamAPI.add(Team("Nottingham Forest", "England", "Premier League", 18, false))
-    teamAPI.add(Team("Southampton", "England", "Premier League", 19, false))
-    teamAPI.add(Team("Wolves", "England", "Premier League", 20, false))
+    teamAPI.add(Team(0, "Arsenal", "England", "Premier League", 1, true))
+    teamAPI.add(Team(1, "Manchester City", "England", "Premier League", 2, true))
+    teamAPI.add(Team(2, "Newcastle United", "England", "Premier League", 3, false))
+    teamAPI.add(Team(3, "Tottenham", "England", "Premier League", 4, true))
+    teamAPI.add(Team(4, "Manchester United", "England", "Premier League", 5, true))
+    teamAPI.add(Team(5, "Liverpool", "England", "Premier League", 6, true))
+    teamAPI.add(Team(6, "Brighton", "England", "Premier League", 7, false))
+    teamAPI.add(Team(7, "Chelsea", "England", "Premier League", 8, true))
+    teamAPI.add(Team(8, "Fulham", "England", "Premier League", 9, false))
+    teamAPI.add(Team(9, "Brentford", "England", "Premier League", 10, false))
+    teamAPI.add(Team(10, "Crystal Palace", "England", "Premier League", 11, false))
+    teamAPI.add(Team(11, "Aston Villa", "England", "Premier League", 12, false))
+    teamAPI.add(Team(12, "Leicester City", "England", "Premier League", 13, false))
+    teamAPI.add(Team(13, "Bournemouth", "England", "Premier League", 14, false))
+    teamAPI.add(Team(14, "Leeds United", "England", "Premier League", 15, false))
+    teamAPI.add(Team(15, "West Ham", "England", "Premier League", 16, true))
+    teamAPI.add(Team(16, "Everton", "England", "Premier League", 17, false))
+    teamAPI.add(Team(17, "Nottingham Forest", "England", "Premier League", 18, false))
+    teamAPI.add(Team(18, "Southampton", "England", "Premier League", 19, false))
+    teamAPI.add(Team(19, "Wolves", "England", "Premier League", 20, false))
 
 
 }

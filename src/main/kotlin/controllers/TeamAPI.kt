@@ -68,23 +68,17 @@ class TeamAPI(serializerType: Serializer){
     }
 
     fun numberOfEuropeanTeams(): Int {
-        var counter = 0
-        for (team in teams) {
-            if (team.isTeamPlayingEurope) {
-                counter++
-            }
-        }
-        return counter
+        return teams.stream()
+            .filter{team: Team -> !team.isTeamPlayingEurope}
+            .count()
+            .toInt()
     }
 
     fun numberOfNonEuropeanTeams(): Int {
-        var counter = 0
-        for (team in teams) {
-            if (!team.isTeamPlayingEurope) {
-                counter++
-            }
-        }
-        return counter
+        return teams.stream()
+            .filter{team: Team -> !team.isTeamPlayingEurope}
+            .count()
+            .toInt()
     }
 
     fun listTeamByLeagueForm(form: Int): String {
@@ -164,7 +158,7 @@ class TeamAPI(serializerType: Serializer){
             for (team in teams) {
                 for (player in team.players) {
                     if (player.playerName.contains(searchString, ignoreCase = true)) {
-                        listOfTeams += "${team.teamId}: ${team.teamName} \n\t${player}\n"
+                        listOfTeams += "${team.teamName}: ${team.teamName} \n\t${player}\n"
                     }
                 }
             }

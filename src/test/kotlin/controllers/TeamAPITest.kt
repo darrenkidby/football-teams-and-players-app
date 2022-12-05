@@ -28,11 +28,11 @@ class TeamAPITest {
 
     @BeforeEach
     fun setup(){
-        englishTeam = Team("Manchester United", "England", "Premier League", 3, false)
-        spanishTeam = Team("Real Madrid", "Spain", "La Liga", 1, false)
-        italianTeam = Team("AS Roma", "Italy", "Serie A", 6, false)
-        germanTeam = Team("Union Berlin", "Germany", "Bundesliga", 16, false)
-        irishTeam = Team("Waterford FC", "Ireland", "League of Ireland", 9, false)
+        englishTeam = Team(0, "Manchester United", "England", "Premier League", 3, false)
+        spanishTeam = Team(0, "Real Madrid", "Spain", "La Liga", 1, false)
+        italianTeam = Team(0, "AS Roma", "Italy", "Serie A", 6, false)
+        germanTeam = Team(0, "Union Berlin", "Germany", "Bundesliga", 16, false)
+        irishTeam = Team(0, "Waterford FC", "Ireland", "League of Ireland", 9, false)
 
         //adding 5 Team to the teams api
         populatedTeams!!.add(englishTeam!!)
@@ -55,7 +55,7 @@ class TeamAPITest {
 
     @Test
     fun `adding a Team to a populated list adds to ArrayList`(){
-        val newTeam = Team("FC Porto", "Portugal", "Liga Nos", 2, false)
+        val newTeam = Team(0, "FC Porto", "Portugal", "Liga Nos", 2, false)
         assertEquals(5, populatedTeams!!.numberOfTeams())
         assertTrue(populatedTeams!!.add(newTeam))
         assertEquals(6, populatedTeams!!.numberOfTeams())
@@ -64,7 +64,7 @@ class TeamAPITest {
 
     @Test
     fun `adding a Team to an empty list adds to ArrayList`(){
-        val newTeam = Team("FC Porto", "Portugal", "Liga Nos", 2, false)
+        val newTeam = Team(0, "FC Porto", "Portugal", "Liga Nos", 2, false)
         assertEquals(0, noTeams!!.numberOfTeams())
         assertTrue(noTeams!!.add(newTeam))
         assertEquals(1, noTeams!!.numberOfTeams())
@@ -151,9 +151,9 @@ class TeamAPITest {
     inner class UpdateTeams {
         @Test
         fun `updating a team that does not exist returns false`(){
-            assertFalse(populatedTeams!!.updateTeam(6, Team("Manu", "UK", "EPL", 1,  false)))
-            assertFalse(populatedTeams!!.updateTeam(-1, Team("Man City", "UK", "EPL", 2, false)))
-            assertFalse(noTeams!!.updateTeam(0, Team("Liverpool FC", "UK", "EPL", 3, false)))
+            assertFalse(populatedTeams!!.updateTeam(6, Team(0, "Manu", "UK", "EPL", 1,  false)))
+            assertFalse(populatedTeams!!.updateTeam(-1, Team(0, "Man City", "UK", "EPL", 2, false)))
+            assertFalse(noTeams!!.updateTeam(0, Team(0, "Liverpool FC", "UK", "EPL", 3, false)))
         }
 
         @Test
@@ -163,7 +163,7 @@ class TeamAPITest {
             assertEquals(9, populatedTeams!!.findTeam(4)!!.leaguePosition)
             assertEquals("Ireland", populatedTeams!!.findTeam(4)!!.teamCountry)
 
-            assertTrue(populatedTeams!!.updateTeam(4, Team("Chelsea FC", "UK", "EPL", 4, false)))
+            assertTrue(populatedTeams!!.updateTeam(4, Team(0, "Chelsea FC", "UK", "EPL", 4, false)))
             assertEquals("Chelsea FC", populatedTeams!!.findTeam(4)!!.teamName)
             assertEquals(4, populatedTeams!!.findTeam(4)!!.leaguePosition)
             assertEquals("UK", populatedTeams!!.findTeam(4)!!.teamCountry)
