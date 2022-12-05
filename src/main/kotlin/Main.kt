@@ -6,6 +6,7 @@ import persistence.JSONSerializer
 import persistence.XMLSerializer
 import java.lang.System.exit
 import utils.ScannerInput
+import utils.ScannerInput.readNextChar
 import utils.ScannerInput.readNextInt
 import utils.ScannerInput.readNextLine
 import java.io.File
@@ -37,11 +38,12 @@ fun mainMenu() : Int {
           ------------------------------------
           | PLAYER MENU                      |
           |   9) Add a player to team        |
-          |   10) Update player information   |
+          |   10) Update player information  |
           |   11) Remove player from team    |
           |   12) Is player a youth player?  |
-          |   13) Is player a retired legend?|
-          |   14) Search Player              |
+          |   13) List youth players         |
+          |   14) Is player a retired legend?|
+          |   15) Search Player              |
           ------------------------------------
           |   0) Exit                        |
           ------------------------------------
@@ -66,7 +68,7 @@ fun listTeams() {
             else -> println("Invalid option entered: " + option);
         }
     } else {
-        println("Option Invalid - No teamss stored");
+        println("Option Invalid - No teams stored");
     }
 }
 
@@ -83,9 +85,11 @@ fun runMenu() {
             7  -> saveTeam()
             8  -> loadTeam()
             9  -> addPlayerToTeam()
-            10  -> updatePlayerInTeam()
+            10 -> updatePlayerInTeam()
             11 -> removePlayerFromTeam()
-            14 -> searchPlayers()
+            12 -> youthTeamStatus()
+            13 -> listYouthPlayer()
+            15 -> searchPlayers()
             99 -> dummyData()
             0  -> exitApp()
             else -> println("Invalid option entered: ${option}")
@@ -251,6 +255,33 @@ fun searchPlayers() {
     } else {
         println(searchResults)
     }
+}
+
+fun youthTeamStatus() {
+    val team: Team? = askUserToChooseNonEuropeanTeam()
+    if (team != null) {
+        val player: Player? = askUserToChoosePlayer(team)
+        if (player != null) {
+            var changeStatus = 'X'
+            if (player.isPlayerYouth) {
+                changeStatus = readNextChar("The player is currently in the youth team. Do you want to promote them to the first team?")
+                if ((changeStatus == 'Y') ||  (changeStatus == 'y'))
+                    player.isPlayerYouth = false
+            }
+            else {
+                changeStatus = readNextChar("The player is currently in the first team. Do you want to add them to the youth team?")
+                if ((changeStatus == 'Y') ||  (changeStatus == 'y'))
+                    player.isPlayerYouth = true
+            }
+        }
+    }
+}
+
+fun listYouthPlayer(){
+    if (teamAPI.numberOfYouthPlayers() > 0) {
+        println("Total Youth Players: ${teamAPI.numberOfYouthPlayers()}")
+    }
+    println(teamAPI.listYouthPlayers())
 }
 
 private fun askUserToChoosePlayer(team: Team): Player? {
