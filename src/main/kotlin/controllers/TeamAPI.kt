@@ -13,17 +13,10 @@ class TeamAPI(serializerType: Serializer){
         return teams.add(team)
     }
 
-    fun listAllTeams(): String {
-        return if (teams.isEmpty()) {
-            "No teams stored"
-        } else {
-            var listOfTeams = ""
-            for (i in teams.indices) {
-                listOfTeams += "${i}: ${teams[i]} \n"
-            }
-            listOfTeams
-        }
-    }
+    fun listAllTeams(): String =
+        if (teams.isEmpty()) "No teams stored"
+    else teams.joinToString (separator = "\n") {team ->
+            teams.indexOf(team).toString() + ": " + team.toString() }
 
     fun numberOfTeams(): Int {
         return teams.size
