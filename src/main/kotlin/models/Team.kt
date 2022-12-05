@@ -2,7 +2,7 @@ package models
 
 import utils.Utilities
 
-data class Team(var teamId: Int = 0,
+data class Team(
     var teamName: String,
     var teamCountry: String,
     var leagueName: String,

@@ -284,4 +284,36 @@ class TeamAPITest {
             assertTrue(populatedTeams!!.findTeam(1)!!.isTeamPlayingEurope)
         }
     }
+
+    @Nested
+    inner class CountingMethods {
+
+        @Test
+        fun numberOfTeamsCalculatedCorrectly() {
+            assertEquals(5, populatedTeams!!.numberOfTeams())
+            assertEquals(0, noTeams!!.numberOfTeams())
+        }
+
+        @Test
+        fun numberOfEuropeanTeamsCalculatedCorrectly() {
+            assertEquals(0, populatedTeams!!.numberOfEuropeanTeams())
+            assertEquals(0, noTeams!!.numberOfEuropeanTeams())
+        }
+
+        @Test
+        fun numberOfNonEuropeanTeamsCalculatedCorrectly() {
+            assertEquals(5, populatedTeams!!.numberOfNonEuropeanTeams())
+            assertEquals(0, noTeams!!.numberOfNonEuropeanTeams())
+        }
+
+        @Test
+        fun numberOfTeamsByLeagueFormCalculatedCorrectly() {
+            assertEquals(1, populatedTeams!!.numberOfTeamsByLeagueForm(1))
+            assertEquals(0, populatedTeams!!.numberOfTeamsByLeagueForm(2))
+            assertEquals(1, populatedTeams!!.numberOfTeamsByLeagueForm(3))
+            assertEquals(0, populatedTeams!!.numberOfTeamsByLeagueForm(4))
+            assertEquals(0, populatedTeams!!.numberOfTeamsByLeagueForm(5))
+            assertEquals(0, noTeams!!.numberOfTeamsByLeagueForm(1))
+        }
+    }
 }
