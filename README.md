@@ -192,4 +192,4 @@
     2. I created an issue and a branch.
     3. I added extinctTeams and activeTeams functions. (similar to europeanTeams and nonEuropeanTeams)
     4. I fixed the tests for the team information.
-    5. 5. I committed and pushed as well as use a pull request and deleted the branch.
+    5. I committed and pushed as well as use a pull request and deleted the branch.
