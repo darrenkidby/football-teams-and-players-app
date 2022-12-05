@@ -43,7 +43,8 @@ fun mainMenu() : Int {
           |   12) Is player a youth player?  |
           |   13) List youth players         |
           |   14) Is player a retired legend?|
-          |   15) Search Player              |
+          |   15) List retired players       |
+          |   16) Search Player              |
           ------------------------------------
           |   0) Exit                        |
           ------------------------------------
@@ -89,7 +90,9 @@ fun runMenu() {
             11 -> removePlayerFromTeam()
             12 -> youthTeamStatus()
             13 -> listYouthPlayer()
-            15 -> searchPlayers()
+            14 -> retiredStatus()
+            15 -> listRetiredPlayer()
+            16 -> searchPlayers()
             99 -> dummyData()
             0  -> exitApp()
             else -> println("Invalid option entered: ${option}")
@@ -203,7 +206,7 @@ fun listEuropeanTeams() {
 }
 
 private fun addPlayerToTeam() {
-    val team: Team? = askUserToChooseNonEuropeanTeam()
+    val team: Team? = askUserToChooseTeam()
     if (team != null) {
         if (team.addPlayer(Player(playerName = readNextLine("\t Player Name: "), playerAge = readNextInt("\t Player Age: "), playerPosition = readNextLine("\t Player Position: "), playerCost = readNextLine("\t Player Cost: "), playerWage = readNextLine("\t Player Wage: "))))
             println("Add Successful!")
@@ -212,7 +215,7 @@ private fun addPlayerToTeam() {
 }
 
 fun updatePlayerInTeam() {
-    val team: Team? = askUserToChooseNonEuropeanTeam()
+    val team: Team? = askUserToChooseTeam()
     if (team != null) {
         val player: Player? = askUserToChoosePlayer(team)
         if (player != null) {
@@ -233,7 +236,7 @@ fun updatePlayerInTeam() {
 }
 
 fun removePlayerFromTeam() {
-    val team: Team? = askUserToChooseNonEuropeanTeam()
+    val team: Team? = askUserToChooseTeam()
     if (team != null) {
         val player: Player? = askUserToChoosePlayer(team)
         if (player != null) {
@@ -258,7 +261,7 @@ fun searchPlayers() {
 }
 
 fun youthTeamStatus() {
-    val team: Team? = askUserToChooseNonEuropeanTeam()
+    val team: Team? = askUserToChooseTeam()
     if (team != null) {
         val player: Player? = askUserToChoosePlayer(team)
         if (player != null) {
@@ -284,6 +287,33 @@ fun listYouthPlayer(){
     println(teamAPI.listYouthPlayers())
 }
 
+fun retiredStatus() {
+    val team: Team? = askUserToChooseTeam()
+    if (team != null) {
+        val player: Player? = askUserToChoosePlayer(team)
+        if (player != null) {
+            var changeStatus = 'X'
+            if (player.isPlayerRetired) {
+                changeStatus = readNextChar("The player is currently in the youth team. Do you want player to come out of retirement?")
+                if ((changeStatus == 'Y') ||  (changeStatus == 'y'))
+                    player.isPlayerRetired = false
+            }
+            else {
+                changeStatus = readNextChar("The player is currently in the first team. Do you want to retire this player?")
+                if ((changeStatus == 'Y') ||  (changeStatus == 'y'))
+                    player.isPlayerRetired = true
+            }
+        }
+    }
+}
+
+fun listRetiredPlayer(){
+    if (teamAPI.numberOfRetiredPlayers() > 0) {
+        println("Total Youth Players: ${teamAPI.numberOfRetiredPlayers()}")
+    }
+    println(teamAPI.listRetiredPlayers())
+}
+
 private fun askUserToChoosePlayer(team: Team): Player? {
     if (team.numberOfPlayers() > 0) {
         print(team.listPlayers())
@@ -295,19 +325,12 @@ private fun askUserToChoosePlayer(team: Team): Player? {
     }
 }
 
-private fun askUserToChooseNonEuropeanTeam(): Team? {
-    listNonEuropeanTeams()
-    if (teamAPI.numberOfNonEuropeanTeams() > 0) {
+private fun askUserToChooseTeam(): Team? {
+    listAllTeams()
+    if (teamAPI.numberOfTeams() > 0) {
         val team = teamAPI.findTeam(readNextInt("\nEnter the id of the team: "))
-        if (team != null) {
-            if (team.isTeamPlayingEurope) {
-                println("Team is a European Team")
-            } else {
-                return team
-            }
-        } else {
+    } else {
             println("Team id is not valid")
-        }
     }
     return null
 }
