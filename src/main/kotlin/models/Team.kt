@@ -2,37 +2,39 @@ package models
 
 import utils.Utilities
 
-data class Team(var teamId: Int = 0,
+data class Team(
+    var teamId: Int = 0,
     var teamName: String,
     var teamCountry: String,
     var leagueName: String,
     var leaguePosition: Int,
-    var isTeamPlayingEurope :Boolean,
-    var isTeamExtinct :Boolean,
-    var players : MutableSet<Player> = mutableSetOf()){
+    var isTeamPlayingEurope: Boolean,
+    var isTeamExtinct: Boolean,
+    var players: MutableSet<Player> = mutableSetOf()
+) {
 
     private var lastPlayerId = 0
     private fun getPlayerId() = lastPlayerId++
 
-    fun addPlayer(player: Player) : Boolean {
+    fun addPlayer(player: Player): Boolean {
         player.playerId = getPlayerId()
         return players.add(player)
     }
 
     fun numberOfPlayers() = players.size
 
-    fun findOne(id: Int): Player?{
-        return players.find{ player -> player.playerId == id }
+    fun findOne(id: Int): Player? {
+        return players.find { player -> player.playerId == id }
     }
 
     fun remove(id: Int): Boolean {
-        return players.removeIf { player -> player.playerId == id}
+        return players.removeIf { player -> player.playerId == id }
     }
 
-    fun update(id: Int, newPlayer : Player): Boolean {
+    fun update(id: Int, newPlayer: Player): Boolean {
         val foundPlayer = findOne(id)
 
-        if (foundPlayer != null){
+        if (foundPlayer != null) {
             foundPlayer.playerName = newPlayer.playerName
             foundPlayer.playerAge = newPlayer.playerAge
             foundPlayer.playerPosition = newPlayer.playerPosition
@@ -47,8 +49,8 @@ data class Team(var teamId: Int = 0,
     }
 
     fun listPlayers() =
-        if (players.isEmpty())  "\tNO PLAYERS ADDED"
-        else  Utilities.formatSetString(players)
+        if (players.isEmpty()) "\tNO PLAYERS ADDED"
+        else Utilities.formatSetString(players)
 
     override fun toString(): String {
         val europeanTeam = if (isTeamPlayingEurope) "Yes" else "No"

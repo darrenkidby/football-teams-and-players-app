@@ -3,24 +3,24 @@ import models.Player
 import models.Team
 import mu.KotlinLogging
 import persistence.JSONSerializer
-import persistence.XMLSerializer
-import java.lang.System.exit
 import utils.ScannerInput
 import utils.ScannerInput.readNextChar
 import utils.ScannerInput.readNextInt
 import utils.ScannerInput.readNextLine
 import java.io.File
+import java.lang.System.exit
 
 private val logger = KotlinLogging.logger {}
-//private val teamAPI = TeamAPI(XMLSerializer(File("teams.xml")))
+// private val teamAPI = TeamAPI(XMLSerializer(File("teams.xml")))
 private val teamAPI = TeamAPI(JSONSerializer(File("teams.json")))
 
 fun main(args: Array<String>) {
     runMenu()
 }
 
-fun mainMenu() : Int {
-    return ScannerInput.readNextInt("""
+fun mainMenu(): Int {
+    return ScannerInput.readNextInt(
+        """
                                             
           ------------------------------------
           |        FOOTBALL TEAM APP         |
@@ -31,17 +31,18 @@ fun mainMenu() : Int {
           ------------------------------------
           |   0) EXIT                        |
           ------------------------------------
-          ==>> """.trimMargin(">"))
+          ==>> """.trimMargin(">")
+    )
 }
 
 fun runMenu() {
     do {
         val option = mainMenu()
         when (option) {
-            1  -> teamsMenu()
-            2  -> playersMenu()
-            0  -> exitApp()
-            else -> println("Invalid option entered: ${option}")
+            1 -> teamsMenu()
+            2 -> playersMenu()
+            0 -> exitApp()
+            else -> println("Invalid option entered: $option")
         }
     } while (true)
 }
@@ -59,18 +60,19 @@ fun listTeams() {
                   > --------------------------------
                   > |   0) Exit                    |
                   > --------------------------------
-                  > ==>> """.trimMargin(">"))
+                  > ==>> """.trimMargin(">")
+        )
 
         when (option) {
-            1 -> listAllTeams();
-            2 -> listNonEuropeanTeams();
-            3 -> listEuropeanTeams();
-            4 -> listActiveTeams();
-            5 -> listExtinctTeams();
-            else -> println("Invalid option entered: " + option);
+            1 -> listAllTeams()
+            2 -> listNonEuropeanTeams()
+            3 -> listEuropeanTeams()
+            4 -> listActiveTeams()
+            5 -> listExtinctTeams()
+            else -> println("Invalid option entered: " + option)
         }
     } else {
-        println("Option Invalid - No teams stored");
+        println("Option Invalid - No teams stored")
     }
 }
 
@@ -93,21 +95,22 @@ fun teamsMenu() {
           ------------------------------------
           |   0) Exit                        |
           ------------------------------------
-          ==>> """.trimMargin(">"))
+          ==>> """.trimMargin(">")
+        )
 
         when (option) {
-            1  -> addTeam()
-            2  -> listTeams()
-            3  -> updateTeam()
-            4  -> expelTeam()
-            5  -> europeanTeam()
-            6  -> extinctTeam()
-            7  -> searchTeams()
-            8  -> saveTeam()
-            9  -> loadTeam()
+            1 -> addTeam()
+            2 -> listTeams()
+            3 -> updateTeam()
+            4 -> expelTeam()
+            5 -> europeanTeam()
+            6 -> extinctTeam()
+            7 -> searchTeams()
+            8 -> saveTeam()
+            9 -> loadTeam()
             99 -> dummyData()
-            0  -> exitApp()
-            else -> println("Invalid option entered: " + option);
+            0 -> exitApp()
+            else -> println("Invalid option entered: " + option)
         }
     }
 }
@@ -129,10 +132,11 @@ fun playersMenu() {
           ------------------------------------
           |   0) Exit                        |
           ------------------------------------
-          ==>> """.trimMargin(">"))
+          ==>> """.trimMargin(">")
+        )
 
         when (option) {
-            1  -> addPlayerToTeam()
+            1 -> addPlayerToTeam()
             2 -> updatePlayerInTeam()
             3 -> removePlayerFromTeam()
             4 -> youthTeamStatus()
@@ -140,16 +144,16 @@ fun playersMenu() {
             6 -> retiredStatus()
             7 -> listRetiredPlayer()
             8 -> searchPlayers()
-            0  -> exitApp()
-            else -> println("Invalid option entered: " + option);
+            0 -> exitApp()
+            else -> println("Invalid option entered: " + option)
         }
     }
 }
 
-fun addTeam(){
-    //logger.info { "addTeam() function invoked" }
+fun addTeam() {
+    // logger.info { "addTeam() function invoked" }
     val teamName = readNextLine("Enter a Team Name: ")
-    val teamCountry  = readNextLine("Enter the Country of the Team: ")
+    val teamCountry = readNextLine("Enter the Country of the Team: ")
     val leagueName = readNextLine("Enter the League of the Team: ")
     val leaguePosition = readNextInt("Enter a position (Champions-1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20-Relegated): ")
     val isTeamAdded = teamAPI.add(Team(0, teamName, teamCountry, leagueName, leaguePosition, false, false))
@@ -162,7 +166,7 @@ fun addTeam(){
 }
 
 fun updateTeam() {
-    //logger.info { "updateTeams() function invoked" }
+    // logger.info { "updateTeams() function invoked" }
     listTeams()
     if (teamAPI.numberOfTeams() > 0) {
         val indexToUpdate = readNextInt("Enter the index of the team you want to update: ")
@@ -172,7 +176,7 @@ fun updateTeam() {
             val leagueName = readNextLine("Enter the League of the Team: ")
             val leaguePosition = readNextInt("Enter a position (Champions-1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20-Relegated): ")
 
-            if (teamAPI.updateTeam(indexToUpdate, Team(0, teamName, teamCountry, leagueName, leaguePosition, false, false))){
+            if (teamAPI.updateTeam(indexToUpdate, Team(0, teamName, teamCountry, leagueName, leaguePosition, false, false))) {
                 println("Update Successful")
             } else {
                 println("Update Failed")
@@ -183,8 +187,8 @@ fun updateTeam() {
     }
 }
 
-fun expelTeam(){
-    //logger.info { "expelledTeams() function invoked" }
+fun expelTeam() {
+    // logger.info { "expelledTeams() function invoked" }
     listTeams()
     if (teamAPI.numberOfTeams() > 0) {
 
@@ -336,19 +340,18 @@ fun youthTeamStatus() {
             var changeStatus = 'X'
             if (player.isPlayerYouth) {
                 changeStatus = readNextChar("The player is currently in the youth team. Do you want to promote them to the first team?")
-                if ((changeStatus == 'Y') ||  (changeStatus == 'y'))
+                if ((changeStatus == 'Y') || (changeStatus == 'y'))
                     player.isPlayerYouth = false
-            }
-            else {
+            } else {
                 changeStatus = readNextChar("The player is currently in the first team. Do you want to add them to the youth team?")
-                if ((changeStatus == 'Y') ||  (changeStatus == 'y'))
+                if ((changeStatus == 'Y') || (changeStatus == 'y'))
                     player.isPlayerYouth = true
             }
         }
     }
 }
 
-fun listYouthPlayer(){
+fun listYouthPlayer() {
     if (teamAPI.numberOfYouthPlayers() > 0) {
         println("Total Youth Players: ${teamAPI.numberOfYouthPlayers()}")
     }
@@ -363,19 +366,18 @@ fun retiredStatus() {
             var changeStatus = 'X'
             if (player.isPlayerRetired) {
                 changeStatus = readNextChar("The player is currently in the youth team. Do you want player to come out of retirement?")
-                if ((changeStatus == 'Y') ||  (changeStatus == 'y'))
+                if ((changeStatus == 'Y') || (changeStatus == 'y'))
                     player.isPlayerRetired = false
-            }
-            else {
+            } else {
                 changeStatus = readNextChar("The player is currently in the first team. Do you want to retire this player?")
-                if ((changeStatus == 'Y') ||  (changeStatus == 'y'))
+                if ((changeStatus == 'Y') || (changeStatus == 'y'))
                     player.isPlayerRetired = true
             }
         }
     }
 }
 
-fun listRetiredPlayer(){
+fun listRetiredPlayer() {
     if (teamAPI.numberOfRetiredPlayers() > 0) {
         println("Total Youth Players: ${teamAPI.numberOfRetiredPlayers()}")
     }
@@ -386,9 +388,8 @@ private fun askUserToChoosePlayer(team: Team): Player? {
     if (team.numberOfPlayers() > 0) {
         print(team.listPlayers())
         return team.findOne(readNextInt("\nEnter the id of the player: "))
-    }
-    else{
-        println ("No players for chosen team")
+    } else {
+        println("No players for chosen team")
         return null
     }
 }
@@ -403,9 +404,9 @@ private fun askUserToChooseTeam(): Team? {
             } else {
                 return team
             }
-    } else {
-        println("Team id is not valid")
-         }
+        } else {
+            println("Team id is not valid")
+        }
     }
     return null
 }
@@ -431,11 +432,9 @@ fun dummyData() {
     teamAPI.add(Team(17, "Nottingham Forest", "England", "Premier League", 18, false, false))
     teamAPI.add(Team(18, "Southampton", "England", "Premier League", 19, false, false))
     teamAPI.add(Team(19, "Wolves", "England", "Premier League", 20, false, false))
-
-
 }
 
-fun exitApp(){
+fun exitApp() {
     println("Exiting...bye")
     exit(0)
 }
