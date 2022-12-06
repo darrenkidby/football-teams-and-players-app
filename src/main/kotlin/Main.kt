@@ -356,7 +356,7 @@ fun youthTeamStatus() {
 
 fun listYouthPlayer() {
     if (teamAPI.numberOfYouthPlayers() > 0) {
-        println("Total Youth Players: ${teamAPI.numberOfYouthPlayers()}")
+        println("Total Former/First Team Players: ${teamAPI.numberOfYouthPlayers()}")
     }
     println(teamAPI.listYouthPlayers())
 }
@@ -368,7 +368,7 @@ fun retiredStatus() {
         if (player != null) {
             var changeStatus = 'X'
             if (player.isPlayerRetired) {
-                changeStatus = readNextChar("The player is currently in the youth team. Do you want player to come out of retirement?")
+                changeStatus = readNextChar("The player is currently retired. Do you want player to come out of retirement?")
                 if ((changeStatus == 'Y') || (changeStatus == 'y'))
                     player.isPlayerRetired = false
             } else {
@@ -382,7 +382,7 @@ fun retiredStatus() {
 
 fun listRetiredPlayer() {
     if (teamAPI.numberOfRetiredPlayers() > 0) {
-        println("Total Youth Players: ${teamAPI.numberOfRetiredPlayers()}")
+        println("Total Current Players: ${teamAPI.numberOfRetiredPlayers()}")
     }
     println(teamAPI.listRetiredPlayers())
 }
