@@ -2,17 +2,17 @@ package controllers
 
 import models.Team
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions.assertNull
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import persistence.JSONSerializer
 import persistence.XMLSerializer
 import java.io.File
-import java.util.*
+import java.util.Locale
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 class TeamAPITest {
 
@@ -21,20 +21,20 @@ class TeamAPITest {
     private var italianTeam: Team? = null
     private var germanTeam: Team? = null
     private var irishTeam: Team? = null
-    //private var populatedTeams: TeamAPI? = TeamAPI(XMLSerializer(File("teams.xml")))
-    //private var noTeams: TeamAPI? = TeamAPI(XMLSerializer(File("teams.xml")))
+    // private var populatedTeams: TeamAPI? = TeamAPI(XMLSerializer(File("teams.xml")))
+    // private var noTeams: TeamAPI? = TeamAPI(XMLSerializer(File("teams.xml")))
     private var populatedTeams: TeamAPI? = TeamAPI(JSONSerializer(File("teams.json")))
     private var noTeams: TeamAPI? = TeamAPI(JSONSerializer(File("teams.json")))
 
     @BeforeEach
-    fun setup(){
+    fun setup() {
         englishTeam = Team(0, "Manchester United", "England", "Premier League", 3, false, false)
         spanishTeam = Team(0, "Real Madrid", "Spain", "La Liga", 1, false, false)
         italianTeam = Team(0, "AS Roma", "Italy", "Serie A", 6, false, false)
         germanTeam = Team(0, "Union Berlin", "Germany", "Bundesliga", 16, false, false)
         irishTeam = Team(0, "Waterford FC", "Ireland", "League of Ireland", 9, false, false)
 
-        //adding 5 Team to the teams api
+        // adding 5 Team to the teams api
         populatedTeams!!.add(englishTeam!!)
         populatedTeams!!.add(spanishTeam!!)
         populatedTeams!!.add(italianTeam!!)
@@ -43,7 +43,7 @@ class TeamAPITest {
     }
 
     @AfterEach
-    fun tearDown(){
+    fun tearDown() {
         englishTeam = null
         spanishTeam = null
         italianTeam = null
@@ -54,7 +54,7 @@ class TeamAPITest {
     }
 
     @Test
-    fun `adding a Team to a populated list adds to ArrayList`(){
+    fun `adding a Team to a populated list adds to ArrayList`() {
         val newTeam = Team(0, "FC Porto", "Portugal", "Liga Nos", 2, false, false)
         assertEquals(5, populatedTeams!!.numberOfTeams())
         assertTrue(populatedTeams!!.add(newTeam))
@@ -63,7 +63,7 @@ class TeamAPITest {
     }
 
     @Test
-    fun `adding a Team to an empty list adds to ArrayList`(){
+    fun `adding a Team to an empty list adds to ArrayList`() {
         val newTeam = Team(0, "FC Porto", "Portugal", "Liga Nos", 2, false, false)
         assertEquals(0, noTeams!!.numberOfTeams())
         assertTrue(noTeams!!.add(newTeam))
@@ -112,7 +112,8 @@ class TeamAPITest {
     @Test
     fun `listTeamsByLeagueForm returns No Teams when ArrayList is empty`() {
         assertEquals(0, noTeams!!.numberOfTeams())
-        assertFalse(noTeams!!.listTeamByLeagueForm(1).lowercase().contains("no Teams")
+        assertFalse(
+            noTeams!!.listTeamByLeagueForm(1).lowercase().contains("no Teams")
         )
     }
 
@@ -136,7 +137,6 @@ class TeamAPITest {
         assertFalse(form1String.contains("Real Madrid"))
         assertFalse(form1String.contains("Waterford FC"))
 
-
         val form4String = populatedTeams!!.listTeamByLeagueForm(4).lowercase(Locale.getDefault())
         assertFalse(form4String.contains("2nd Team"))
         assertFalse(form4String.contains("League Position 8"))
@@ -150,8 +150,8 @@ class TeamAPITest {
     @Nested
     inner class UpdateTeams {
         @Test
-        fun `updating a team that does not exist returns false`(){
-            assertFalse(populatedTeams!!.updateTeam(6, Team(0, "Manu", "UK", "EPL", 1,  false, false)))
+        fun `updating a team that does not exist returns false`() {
+            assertFalse(populatedTeams!!.updateTeam(6, Team(0, "Manu", "UK", "EPL", 1, false, false)))
             assertFalse(populatedTeams!!.updateTeam(-1, Team(0, "Man City", "UK", "EPL", 2, false, false)))
             assertFalse(noTeams!!.updateTeam(0, Team(0, "Liverpool FC", "UK", "EPL", 3, false, false)))
         }
@@ -265,14 +265,14 @@ class TeamAPITest {
     @Nested
     inner class EuropeanTeams {
         @Test
-        fun `Adding a Team to Europe that does not exist returns false`(){
+        fun `Adding a Team to Europe that does not exist returns false`() {
             assertFalse(populatedTeams!!.europeanTeam(6))
             assertFalse(populatedTeams!!.europeanTeam(-1))
             assertFalse(noTeams!!.europeanTeam(0))
         }
 
         @Test
-        fun `Adding a Team to Europe That is Already Added to Europe returns false`(){
+        fun `Adding a Team to Europe That is Already Added to Europe returns false`() {
             assertFalse(populatedTeams!!.findTeam(0)!!.isTeamPlayingEurope)
             assertTrue(populatedTeams!!.europeanTeam(0))
         }
@@ -378,7 +378,8 @@ class TeamAPITest {
         @Test
         fun `listTeamByLeagueForm returns No Teams when ArrayList is empty`() {
             assertEquals(0, noTeams!!.numberOfTeams())
-            assertTrue(noTeams!!.listTeamByLeagueForm(1).lowercase().contains("no teams")
+            assertTrue(
+                noTeams!!.listTeamByLeagueForm(1).lowercase().contains("no teams")
             )
         }
 

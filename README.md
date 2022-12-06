@@ -186,7 +186,16 @@
     5. I checked the tests.
     6. I committed and pushed as well as use a pull request and deleted the branch.
 
-24. Additional
+24. Gradle Tasks
+    1. I selected View --> Tool Windows --> Gradle to allow the gradle window to appear.
+    2. I added Dokka using Gradle. This was done by adding a plugin and updating the dependencies to build.gradle.kts
+    3. I ran the dokkaHTML task and dokkaJavadoc task. I checked out their generated webpages.
+    4. I ran a test using verification test. I then ran tests using Run Tests 'Tests in football-teams-and-players-app-test' with Coverage.
+    5. I added Jacoco by adding a new plugin and new tasks.test to build.gradle.kts.
+    6. I added a new plugin for linting. I updated the imports of ScannerInput and TeamAPITest as I was getting linting errors. Updating the imports fixed the errors.
+    7. I ran build jar in gradle tasks. I added a new tasks.jar into build.gradle.kts and changed version to 1.0 insteas of 1.0-SNAPSHOT
+
+25. Additional
 
     1. I added colour to the console. I found a GitHub webpage by mgumiero9 with different Ansi codes. https://gist.github.com/mgumiero9/665ab5f0e5e7e46cb049c1544a00e29f.
     2. I created an issue and a branch.

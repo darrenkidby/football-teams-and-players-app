@@ -14,13 +14,16 @@ private val logger = KotlinLogging.logger {}
 // private val teamAPI = TeamAPI(XMLSerializer(File("teams.xml")))
 private val teamAPI = TeamAPI(JSONSerializer(File("teams.json")))
 
+var colour = "\u001B[31m"
+var bold = "\u001B[1m"
+
 fun main(args: Array<String>) {
     runMenu()
 }
 
 fun mainMenu(): Int {
     return ScannerInput.readNextInt(
-        """
+        """$colour $bold
                                             
           ------------------------------------
           |        FOOTBALL TEAM APP         |
